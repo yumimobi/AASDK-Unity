@@ -1,169 +1,85 @@
 #if UNITY_IOS
 using System;
-using AntiAddictionSDK.Common;
-using AntiAddictionSDK.Api;
+using AASDK.Common;
+using AASDK.Api;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace AntiAddictionSDK.iOS
+namespace AASDK.iOS
 {
-    public class NotificationClient : IAntiAddictionClient
+    public class ManagerClient : IAntiAddictionClient
     {
-        private IntPtr notificationPtr;
+        private IntPtr managerPtr;
+        private IntPtr managerClientPtr;
 
-        private IntPtr notificationClientPtr;
-
-#region Notification callback types
-
-        internal delegate void AAPrivacyPolicyViewControllerHasBeenShownCallback(IntPtr notificationClient);
-        internal delegate void AAUserAgreesToPrivacyPolicyCallback(IntPtr notificationClient);
-        internal delegate void AALoginViewControllerHasBeenShownCallback(IntPtr notificationClient);
-        internal delegate void AALoginViewControllerHasBeenDismissedCallback(IntPtr notificationClient);
-        internal delegate void AALoginSuccessCallback(IntPtr notificationClient, string zplayID);
-        internal delegate void AALoginFailCallback(IntPtr notificationClient);
-        internal delegate void AAUserAuthVcHasBeenShownCallback(IntPtr notificationClient);
-        internal delegate void AAUserAuthSuccessCallback(IntPtr notificationClient);
-        internal delegate void AAWarningVcHasBeenShownCallback(IntPtr notificationClient);
-        internal delegate void AAUserClickLoginButtonInPaymentWarningVcCallback(IntPtr notificationClient);
-        internal delegate void AAUserClickLoginButtonInNoTimeLeftWarningVcCallback(IntPtr notificationClient);
-        internal delegate void AAUserClickLoginOutButtonCallback(IntPtr notificationClient);
-        internal delegate void AAUserClickConfirmButtonCallback(IntPtr notificationClient);
-        internal delegate void AALoginOutSuccessfullCallback(IntPtr notificationClient);
-        internal delegate void AAPaymentIsRestrictedCallback(IntPtr notificationClient);
-        internal delegate void AAPaymentUnlimitedCallback(IntPtr notificationClient);
-
+#region callback types
+        internal delegate void AALoginSuccessCallback(IntPtr managerClient, string zplayID);
+        internal delegate void AALoginFailCallback(IntPtr managerClient);
+        internal delegate void AAUserAuthSuccessCallback(IntPtr managerClient);
+        internal delegate void AAUserAuthFailCallback(IntPtr managerClient);
+        internal delegate void AANoTimeLeftWithTouristsModeCallback(IntPtr managerClient, string zplayID);
+        internal delegate void AANoTimeLeftWithNonageModeCallback(IntPtr managerClient);
 #endregion
-
-        // 隐私协议回调
-        public event EventHandler<EventArgs> OnPrivacyPolicyShown;
-        public event EventHandler<EventArgs> OnUserAgreesToPrivacyPolicy;
-
         // 登录回调
-        public event EventHandler<LoginSuccessEventArgs> OnLoginSuccess;
-        public event EventHandler<EventArgs> OnLoginHasBeenShown;
-        public event EventHandler<EventArgs> OnLoginHasBeenDismissed;
-        public event EventHandler<EventArgs> OnLoginFail;
+        public event EventHandler<LoginSuccessEventArgs> OnTouristsModeLoginSuccess;
+        public event EventHandler<EventArgs> OnTouristsModeLoginFailed;
 
         //实名认证回调
-        public event EventHandler<EventArgs> OnUserAuthVcHasBeenShown;
-        public event EventHandler<EventArgs> OnUserAuthSuccess;
+        public event EventHandler<EventArgs> RealNameAuthenticateResult;
+        public event EventHandler<EventArgs> OnUserAuthFail;
         
-        //用户提示界面回调
-        public event EventHandler<EventArgs> OnWarningHasBeenShown;
-        public event EventHandler<EventArgs> OnUserClickLoginButtonInPayment;
-        public event EventHandler<EventArgs> OnUserClickLoginButtonInNoTimeLeft;
-        public event EventHandler<EventArgs> OnUserClickQuitButton;
-        public event EventHandler<EventArgs> OnUserClickConfirmButton;
-        
-        //注销登录
-        public event EventHandler<EventArgs> OnLogoutCallback;
+        public event EventHandler<EventArgs> OnNoTimeLeftWithTouristMode;
+        public event EventHandler<EventArgs> OnNoTimeLeftWithNonageMode;
 
-        //检测支付
-        public event EventHandler<EventArgs> OnCanPay;
-        public event EventHandler<EventArgs> OnProhibitPay;
-
-        public NotificationClient()
+        public ManagerClient()
         {
-            notificationClientPtr = (IntPtr)GCHandle.Alloc(this);
-            notificationPtr = Externs.AACreateNotification(notificationClientPtr);
+            managerClientPtr = (IntPtr)GCHandle.Alloc(this);
+            managerPtr = Externs.AACreateManager(managerClientPtr);
 
-            Externs.AASetNotificationCallbacks(
-                notificationPtr,
-                privacyPolicyViewControllerHasBeenShownCallback,
-                userAgreesToPrivacyPolicyCallback,
-                loginViewControllerHasBeenShownCallback,
-                loginViewControllerHasBeenDismissedCallback,
+            Externs.AASetManagerCallbacks(
+                managerPtr,
                 loginSuccessCallback,
                 loginFailCallback,
-                userAuthVcHasBeenShownCallback,
                 userAuthSuccessCallback,
-                warningVcHasBeenShownCallback,
-                userClickLoginButtonInPaymentWarningVcCallback,
-                userClickLoginButtonInNoTimeLeftWarningVcCallback,
-                userClickLoginOutButtonCallback,
-                userClickConfirmButtonCallback,
-                loginOutSuccessfullCallback,
-                paymentIsRestrictedCallback,
-                paymentUnlimitedCallback
+                userAuthFailCallback,
+                noTimeLeftWithTouristsModeCallback,
+                noTimeLeftWithNonageModeCallback
             );
         }
 
-        private IntPtr NotificationPtr
+        private IntPtr ManagerPtr
         {
             get
             {
-                return NotificationPtr;
+                return ManagerPtr;
             }
 
             set
             {
-                Externs.AARelease(NotificationPtr);
-                NotificationPtr = value;
+                Externs.AARelease(ManagerPtr);
+                ManagerPtr = value;
             }
         }
 
 #region IAntiAddictionClient implement 
         public int GetUserLoginStatus()
         {
-            return Externs.getUserLoginStatus(notificationPtr);
+            return Externs.getUserLoginStatus(managerPtr);
         }
         
         public int GetUserAuthenticationIdentity()
         {
-            return Externs.getUserAuthenticationIdentity(notificationPtr);
+            return Externs.getUserAuthenticationStatus(managerPtr);
         }
 
         public void ShowPrivacyPolicyView()
         {
-            Externs.showPrivacyPolicyView(notificationPtr);
+            Externs.presentRealNameAuthController(managerPtr);
         }
 
         public void ShowLoginViewController()
         {
-            Externs.showLoginViewController(notificationPtr);
-        }
-
-        public void ShowUserAuthenticationViewController()
-        {
-            Externs.showUserAuthenticationViewController(notificationPtr);
-        }
-
-        public void LoginWithUserName(String username, String password)
-        {
-            Externs.loginWithUserNameAndPassword(notificationPtr, username, password);
-        }
-
-        public void LoginWithPlatformToken(String token, String otherID,String platformName)
-        {
-            Externs.loginWithThirdPartyPlatform(notificationPtr, token, otherID, platformName);
-        }
-
-        public void LoginWithZplayID(String zplayID) 
-        {
-            Externs.loginWithZplayID(notificationPtr, zplayID);
-        }
-        
-        public void LoginOut()
-        {
-            Externs.loginOut(notificationPtr);
-        }
-
-        public void CheckNumberLimitBeforePayment(int payNumber)
-        {
-            Externs.checkNumberLimitBeforePayment(notificationPtr, payNumber);
-        }
-
-        public void ReportNumberAfterPayment(int payNumber)
-        {
-            Externs.reportNumberAfterPayment(notificationPtr, payNumber);
-        }
-
-        public void GameOnPause()
-        {
-        }
-
-        public void GameOnResume()
-        {
+            Externs.checkLeftTimeOfCurrentUser(managerPtr);
         }
 #endregion
 
