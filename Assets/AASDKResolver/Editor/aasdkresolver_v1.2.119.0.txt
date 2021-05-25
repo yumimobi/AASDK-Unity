@@ -1,0 +1,8 @@
+Assets/AASDKResolver/Editor/Google.IOSResolver_v1.2.119.0.dll
+Assets/AASDKResolver/Editor/Google.IOSResolver_v1.2.119.0.dll.mdb
+Assets/AASDKResolver/Editor/Google.JarResolver_v1.2.119.0.dll
+Assets/AASDKResolver/Editor/Google.JarResolver_v1.2.119.0.dll.mdb
+Assets/AASDKResolver/Editor/Google.VersionHandler.dll
+Assets/AASDKResolver/Editor/Google.VersionHandler.dll.mdb
+Assets/AASDKResolver/Editor/Google.VersionHandlerImpl_v1.2.119.0.dll
+Assets/AASDKResolver/Editor/Google.VersionHandlerImpl_v1.2.119.0.dll.mdb

@@ -1,0 +1,14 @@
+﻿<dependencies>
+  <androidPackages>
+    <androidPackage spec="io.github.yumimobi:antiaddiction:0.0.2-alpha1">
+      <repositories>
+        <repository>https://repo1.maven.org/maven2/</repository>
+      </repositories>
+    </androidPackage>
+  </androidPackages>
+
+  <iosPods>
+    <iosPod name="AntiAddictionSystem" version="~> 1.0.0">
+    </iosPod>
+  </iosPods>
+</dependencies>
