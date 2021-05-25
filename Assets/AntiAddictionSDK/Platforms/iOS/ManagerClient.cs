@@ -1,11 +1,11 @@
 #if UNITY_IOS
 using System;
-using AASDK.Common;
-using AASDK.Api;
+using AntiAddictionSDK.Common;
+using AntiAddictionSDK.Api;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace AASDK.iOS
+namespace AntiAddictionSDK.iOS
 {
     public class ManagerClient : IAntiAddictionClient
     {
@@ -17,7 +17,7 @@ namespace AASDK.iOS
         internal delegate void AALoginFailCallback(IntPtr managerClient);
         internal delegate void AAUserAuthSuccessCallback(IntPtr managerClient);
         internal delegate void AAUserAuthFailCallback(IntPtr managerClient);
-        internal delegate void AANoTimeLeftWithTouristsModeCallback(IntPtr managerClient, string zplayID);
+        internal delegate void AANoTimeLeftWithTouristsModeCallback(IntPtr managerClient);
         internal delegate void AANoTimeLeftWithNonageModeCallback(IntPtr managerClient);
 #endregion
         // 登录回调
@@ -77,9 +77,9 @@ namespace AASDK.iOS
             Externs.presentRealNameAuthController(managerPtr);
         }
 
-        public void LeftTimeOfCurrentUser()
+        public int LeftTimeOfCurrentUser()
         {
-            Externs.checkLeftTimeOfCurrentUser(managerPtr);
+            return Externs.checkLeftTimeOfCurrentUser(managerPtr);
         }
 
         public void GameOnPause()

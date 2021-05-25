@@ -3,7 +3,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace AASDK.iOS
+namespace AntiAddictionSDK.iOS
 {
     class Externs
     {
@@ -23,7 +23,7 @@ namespace AASDK.iOS
             ManagerClient.AAUserAuthSuccessCallback userAuthSuccessCallback,
             ManagerClient.AAUserAuthFailCallback userAuthFailCallback,
             ManagerClient.AANoTimeLeftWithTouristsModeCallback noTimeLeftWithTouristsModeCallback,
-            ManagerClient.AANoTimeLeftWithNonageModeCallback noTimeLeftWithNonageModeCallback,
+            ManagerClient.AANoTimeLeftWithNonageModeCallback noTimeLeftWithNonageModeCallback
         );
         
         [DllImport("__Internal")]
@@ -36,7 +36,7 @@ namespace AASDK.iOS
         internal static extern void presentRealNameAuthController(IntPtr manager);
         
         [DllImport("__Internal")]
-        internal static extern void checkLeftTimeOfCurrentUser(IntPtr manager);
+        internal static extern int checkLeftTimeOfCurrentUser(IntPtr manager);
         #endregion
     }
 }
