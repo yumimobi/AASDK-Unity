@@ -148,9 +148,9 @@ public class AntiAddictionSDK {
         }
     }
 
-    public long leftTimeOfCurrentUser() {
+    public int leftTimeOfCurrentUser() {
         Log.i(TAG, "leftTimeOfCurrentUser");
-        return AntiAddictionSystemSDK.leftTimeOfCurrentUser(activity);
+        return Integer.valueOf(AntiAddictionSystemSDK.leftTimeOfCurrentUser(activity) + "");
     }
 
 
