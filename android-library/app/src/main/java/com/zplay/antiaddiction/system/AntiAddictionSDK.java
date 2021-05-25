@@ -66,13 +66,11 @@ public class AntiAddictionSDK {
                                 @Override
                                 public void run() {
                                     Log.i(TAG, "realNameAuthenticateResult :" + isSuccess);
-                                    String data = "0";
                                     if (isSuccess) {
-                                        data = "1";
+                                        listener.realNameAuthenticateSuccess();
                                     } else {
-                                        data = "0";
+                                        listener.realNameAuthenticateFailed();
                                     }
-                                    listener.realNameAuthenticateResult(data);
                                 }
                             });
                         }

@@ -16,7 +16,8 @@ public class AASDKDemoScript: MonoBehaviour
         antiAddictionSDK = new AntiAddictionStytemSDK();
         antiAddictionSDK.OnTouristsModeLoginSuccess += HandleTouristsModeLoginSuccess;
         antiAddictionSDK.OnTouristsModeLoginFailed += HandleTouristsModeLoginFailed;
-        antiAddictionSDK.RealNameAuthenticateResult += HandleRealNameAuthenticateResult;
+        antiAddictionSDK.RealNameAuthenticateSuccess += HandleRealNameAuthenticateSuccess;
+        antiAddictionSDK.RealNameAuthenticateFailed += HandleRealNameAuthenticateFailed;
         antiAddictionSDK.NoTimeLeftWithTouristsMode += HandleNoTimeLeftWithTouristsMode;
         antiAddictionSDK.NoTimeLeftWithNonageMode += HandleNoTimeLeftWithNonageMode;
         
@@ -107,11 +108,16 @@ public class AASDKDemoScript: MonoBehaviour
     }
 
 
-    public void HandleRealNameAuthenticateResult(object sender, RealNameAuthenticateEventArgs args)
+    public void HandleRealNameAuthenticateSuccess(object sender, EventArgs args)
     {
-        String isRealNameStatus = args.Message;
-        statusText.text = "HandleRealNameAuthenticateResult：" + isRealNameStatus;
-        print("AntiAddiction---HandleRealNameAuthenticateResult");
+        statusText.text = "HandleRealNameAuthenticateSuccess：";
+        print("AntiAddiction---HandleRealNameAuthenticateSuccess");
+    }
+
+    public void HandleRealNameAuthenticateFailed(object sender, EventArgs args)
+    {
+        statusText.text = "HandleRealNameAuthenticateFailed：";
+        print("AntiAddiction---HandleRealNameAuthenticateFailed");
     }
 
 

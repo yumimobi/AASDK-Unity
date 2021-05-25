@@ -12,7 +12,9 @@ public interface UnityAntiAddictionListener {
 
     void onTouristsModeLoginFailed();
 
-    void realNameAuthenticateResult(String isSuccess);
+    void realNameAuthenticateSuccess();
+
+    void realNameAuthenticateFailed();
 
     void noTimeLeftWithTouristsMode();
 
