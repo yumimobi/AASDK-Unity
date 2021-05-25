@@ -31,11 +31,19 @@ namespace AntiAddictionSDK.Api
                 }
             };
 
-            client.RealNameAuthenticateResult += (sender, args) =>
+            client.RealNameAuthenticateSuccess += (sender, args) =>
             {
-                if(RealNameAuthenticateResult != null)
+                if(RealNameAuthenticateSuccess != null)
                 {
-                    RealNameAuthenticateResult(this, args);
+                    RealNameAuthenticateSuccess(this, args);
+                }
+            };
+
+            client.RealNameAuthenticateFailed += (sender, args) =>
+            {
+                if (RealNameAuthenticateFailed != null)
+                {
+                    RealNameAuthenticateFailed(this, args);
                 }
             };
 
@@ -64,10 +72,13 @@ namespace AntiAddictionSDK.Api
         // 登录失败
         public event EventHandler<EventArgs> OnTouristsModeLoginFailed;
         // 实名认证回调
-        public event EventHandler<RealNameAuthenticateEventArgs> RealNameAuthenticateResult;
+        // 实名认证成功
+        public event EventHandler<EventArgs> RealNameAuthenticateSuccess;
+        // 实名认证失败
+        public event EventHandler<EventArgs> RealNameAuthenticateFailed;
         // 游客时长已用完
         public event EventHandler<EventArgs> NoTimeLeftWithTouristsMode;
-        //未成年人时长已用完
+        // 未成年人时长已用完
         public event EventHandler<EventArgs> NoTimeLeftWithNonageMode;
 
      

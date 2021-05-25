@@ -14,7 +14,8 @@ namespace AntiAddictionSDK.Android
 
         public event EventHandler<LoginSuccessEventArgs> OnTouristsModeLoginSuccess = delegate { };
         public event EventHandler<EventArgs> OnTouristsModeLoginFailed = delegate { };
-        public event EventHandler<RealNameAuthenticateEventArgs> RealNameAuthenticateResult = delegate { };
+        public event EventHandler<EventArgs> RealNameAuthenticateSuccess = delegate { };
+        public event EventHandler<EventArgs> RealNameAuthenticateFailed = delegate { };
         public event EventHandler<EventArgs> NoTimeLeftWithTouristsMode = delegate { };
         public event EventHandler<EventArgs> NoTimeLeftWithNonageMode = delegate { };
 
@@ -88,15 +89,19 @@ namespace AntiAddictionSDK.Android
         }
 
     
-        void realNameAuthenticateResult(string isSuccess)
+        void realNameAuthenticateSuccess()
         {
-            if (RealNameAuthenticateResult != null)
+            if (RealNameAuthenticateSuccess != null)
             {
-                RealNameAuthenticateEventArgs args = new RealNameAuthenticateEventArgs()
-                {
-                    Message = isSuccess
-                };
-                RealNameAuthenticateResult(this, args);
+               RealNameAuthenticateSuccess(this, EventArgs.Empty);
+            }
+        }
+
+        void realNameAuthenticateFailed()
+        {
+            if (RealNameAuthenticateFailed != null)
+            {
+                RealNameAuthenticateFailed(this, EventArgs.Empty);
             }
         }
 

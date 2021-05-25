@@ -13,7 +13,10 @@ namespace AntiAddictionSDK.Common
         // 登录失败
         event EventHandler<EventArgs> OnTouristsModeLoginFailed;
         // 实名认证回调
-        event EventHandler<RealNameAuthenticateEventArgs> RealNameAuthenticateResult;
+        //实名认证成功
+        event EventHandler<EventArgs> RealNameAuthenticateSuccess;
+        //实名认证失败
+        event EventHandler<EventArgs> RealNameAuthenticateFailed;
         // 游客时长已用完
         event EventHandler<EventArgs> NoTimeLeftWithTouristsMode;
         // 未成年人时长已用完
