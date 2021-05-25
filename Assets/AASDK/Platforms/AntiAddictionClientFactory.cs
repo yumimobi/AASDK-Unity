@@ -12,7 +12,7 @@ namespace AntiAddictionSDK
 #if UNITY_ANDROID
             return new Android.AntiAddictionClient();
 #elif UNITY_IPHONE
-            return new iOS.NotificationClient();
+            return new iOS.ManagerClient();
 #else
             return new DummyClient();
 #endif
