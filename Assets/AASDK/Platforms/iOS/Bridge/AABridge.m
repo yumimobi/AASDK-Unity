@@ -45,7 +45,7 @@
 // touristsID 有值则为登录成功，否则登录失败
 - (void)touristsModeLoginResult:(nullable NSString *)touristsID {
     if (touristsID.length && self.loginSuccessCallback) {
-        self.loginSuccessCallback(self.client);
+        self.loginSuccessCallback(self.client, [touristsID cStringUsingEncoding:NSUTF8StringEncoding]);
     } else if (self.loginFailCallback) {
         self.loginFailCallback(self.client);
     }
