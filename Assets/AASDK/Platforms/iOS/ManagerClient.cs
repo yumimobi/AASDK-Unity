@@ -25,11 +25,11 @@ namespace AASDK.iOS
         public event EventHandler<EventArgs> OnTouristsModeLoginFailed;
 
         //实名认证回调
-        public event EventHandler<EventArgs> RealNameAuthenticateResult;
-        public event EventHandler<EventArgs> OnUserAuthFail;
+        public event EventHandler<EventArgs> RealNameAuthenticateSuccess;
+        public event EventHandler<EventArgs> RealNameAuthenticateFailed;
         
-        public event EventHandler<EventArgs> OnNoTimeLeftWithTouristMode;
-        public event EventHandler<EventArgs> OnNoTimeLeftWithNonageMode;
+        public event EventHandler<EventArgs> NoTimeLeftWithTouristsMode;
+        public event EventHandler<EventArgs> NoTimeLeftWithNonageMode;
 
         public ManagerClient()
         {
@@ -62,197 +62,105 @@ namespace AASDK.iOS
         }
 
 #region IAntiAddictionClient implement 
-        public int GetUserLoginStatus()
+        public int IsLogined()
         {
             return Externs.getUserLoginStatus(managerPtr);
         }
         
-        public int GetUserAuthenticationIdentity()
+        public int IsAuthenticated()
         {
             return Externs.getUserAuthenticationStatus(managerPtr);
         }
 
-        public void ShowPrivacyPolicyView()
+        public void ShowRealNameView()
         {
             Externs.presentRealNameAuthController(managerPtr);
         }
 
-        public void ShowLoginViewController()
+        public void LeftTimeOfCurrentUser()
         {
             Externs.checkLeftTimeOfCurrentUser(managerPtr);
+        }
+
+        public void GameOnPause()
+        {
+        }
+
+        public void GameOnResume()
+        {
         }
 #endregion
 
 #region Notification callback methods
-        [MonoPInvokeCallback(typeof(AAPrivacyPolicyViewControllerHasBeenShownCallback))]
-        private static void privacyPolicyViewControllerHasBeenShownCallback(IntPtr notificationClient)
-        {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnPrivacyPolicyShown != null)
-            {
-                client.OnPrivacyPolicyShown(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(AAUserAgreesToPrivacyPolicyCallback))]
-        private static void userAgreesToPrivacyPolicyCallback(IntPtr notificationClient)
-        {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnUserAgreesToPrivacyPolicy != null)
-            {
-                client.OnUserAgreesToPrivacyPolicy(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(AALoginViewControllerHasBeenShownCallback))]
-        private static void loginViewControllerHasBeenShownCallback(IntPtr notificationClient)
-        {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnLoginHasBeenShown != null)
-            {
-                client.OnLoginHasBeenShown(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(AALoginViewControllerHasBeenDismissedCallback))]
-        private static void loginViewControllerHasBeenDismissedCallback(IntPtr notificationClient)
-        {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnLoginHasBeenDismissed != null)
-            {
-                client.OnLoginHasBeenDismissed(client, EventArgs.Empty);
-            }
-        }
-
         [MonoPInvokeCallback(typeof(AALoginSuccessCallback))]
-        private static void loginSuccessCallback(IntPtr notificationClient, string zplayID)
+        private static void loginSuccessCallback(IntPtr managerClient, string zplayID)
         {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnLoginSuccess != null)
+            ManagerClient client = IntPtrToManagerClient(managerClient);
+            if (client.OnTouristsModeLoginSuccess != null)
             {
                 LoginSuccessEventArgs args = new LoginSuccessEventArgs()
                 {
                     Message = zplayID
                 };
-                client.OnLoginSuccess(client, args);
+                client.OnTouristsModeLoginSuccess(client, args);
             }
         }
 
         [MonoPInvokeCallback(typeof(AALoginFailCallback))]
-        private static void loginFailCallback(IntPtr notificationClient)
+        private static void loginFailCallback(IntPtr managerClient)
         {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnLoginFail != null)
+            ManagerClient client = IntPtrToManagerClient(managerClient);
+            if (client.OnTouristsModeLoginFailed != null)
             {
-                client.OnLoginFail(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(AAUserAuthVcHasBeenShownCallback))]
-        private static void userAuthVcHasBeenShownCallback(IntPtr notificationClient)
-        {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnUserAuthVcHasBeenShown != null)
-            {
-                client.OnUserAuthVcHasBeenShown(client, EventArgs.Empty);
+                client.OnTouristsModeLoginFailed(client, EventArgs.Empty);
             }
         }
 
         [MonoPInvokeCallback(typeof(AAUserAuthSuccessCallback))]
-        private static void userAuthSuccessCallback(IntPtr notificationClient)
+        private static void userAuthSuccessCallback(IntPtr managerClient)
         {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnUserAuthSuccess != null)
+            ManagerClient client = IntPtrToManagerClient(managerClient);
+            if (client.RealNameAuthenticateSuccess != null)
             {
-                client.OnUserAuthSuccess(client, EventArgs.Empty);
+                client.RealNameAuthenticateSuccess(client, EventArgs.Empty);
             }
         }
 
-        [MonoPInvokeCallback(typeof(AAWarningVcHasBeenShownCallback))]
-        private static void warningVcHasBeenShownCallback(IntPtr notificationClient)
+        [MonoPInvokeCallback(typeof(AAUserAuthFailCallback))]
+        private static void userAuthFailCallback(IntPtr managerClient)
         {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnWarningHasBeenShown != null)
+            ManagerClient client = IntPtrToManagerClient(managerClient);
+            if (client.RealNameAuthenticateFailed != null)
             {
-                client.OnWarningHasBeenShown(client, EventArgs.Empty);
+                client.RealNameAuthenticateFailed(client, EventArgs.Empty);
             }
         }
 
-        [MonoPInvokeCallback(typeof(AAUserClickLoginButtonInPaymentWarningVcCallback))]
-        private static void userClickLoginButtonInPaymentWarningVcCallback(IntPtr notificationClient)
+        [MonoPInvokeCallback(typeof(AANoTimeLeftWithTouristsModeCallback))]
+        private static void noTimeLeftWithTouristsModeCallback(IntPtr managerClient)
         {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnUserClickLoginButtonInPayment != null)
+            ManagerClient client = IntPtrToManagerClient(managerClient);
+            if (client.NoTimeLeftWithTouristsMode != null)
             {
-                client.OnUserClickLoginButtonInPayment(client, EventArgs.Empty);
+                client.NoTimeLeftWithTouristsMode(client, EventArgs.Empty);
             }
         }
 
-        [MonoPInvokeCallback(typeof(AAUserClickLoginButtonInNoTimeLeftWarningVcCallback))]
-        private static void userClickLoginButtonInNoTimeLeftWarningVcCallback(IntPtr notificationClient)
+        [MonoPInvokeCallback(typeof(AANoTimeLeftWithNonageModeCallback))]
+        private static void noTimeLeftWithNonageModeCallback(IntPtr managerClient)
         {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnUserClickLoginButtonInNoTimeLeft != null)
+            ManagerClient client = IntPtrToManagerClient(managerClient);
+            if (client.NoTimeLeftWithNonageMode != null)
             {
-                client.OnUserClickLoginButtonInNoTimeLeft(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(AAUserClickLoginOutButtonCallback))]
-        private static void userClickLoginOutButtonCallback(IntPtr notificationClient)
-        {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnUserClickQuitButton != null)
-            {
-                client.OnUserClickQuitButton(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(AAUserClickConfirmButtonCallback))]
-        private static void userClickConfirmButtonCallback(IntPtr notificationClient)
-        {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnUserClickConfirmButton != null)
-            {
-                client.OnUserClickConfirmButton(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(AALoginOutSuccessfullCallback))]
-        private static void loginOutSuccessfullCallback(IntPtr notificationClient)
-        {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnLogoutCallback != null)
-            {
-                client.OnLogoutCallback(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(AAPaymentIsRestrictedCallback))]
-        private static void paymentIsRestrictedCallback(IntPtr notificationClient)
-        {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnCanPay != null)
-            {
-                client.OnCanPay(client, EventArgs.Empty);
-            }
-        }
-
-        [MonoPInvokeCallback(typeof(AAPaymentUnlimitedCallback))]
-        private static void paymentUnlimitedCallback(IntPtr notificationClient)
-        {
-            NotificationClient client = IntPtrToNotifiactionClient(notificationClient);
-            if (client.OnProhibitPay != null)
-            {
-                client.OnProhibitPay(client, EventArgs.Empty);
+                client.NoTimeLeftWithNonageMode(client, EventArgs.Empty);
             }
         }
         
-        private static NotificationClient IntPtrToNotifiactionClient(IntPtr notificationClient)
+        private static ManagerClient IntPtrToManagerClient(IntPtr managerClient)
         {
-            GCHandle handle = (GCHandle)notificationClient;
+            GCHandle handle = (GCHandle)managerClient;
 
-            return handle.Target as NotificationClient;
+            return handle.Target as ManagerClient;
         }
 
 #endregion
