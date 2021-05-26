@@ -30,7 +30,7 @@ allprojects {
             url "https://maven.google.com"
         }
         maven {
-            url "https://repo1.maven.org/maven2/" // Assets/AASDK/Editor/AASDKDependencies.xml:7
+            url "https://repo1.maven.org/maven2/" // Assets/AntiAddictionSDK/Editor/AntiAddictionSDKDependencies.xml:7
         }
         mavenLocal()
         jcenter()
@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
 // Android Resolver Dependencies Start
-    implementation 'io.github.yumimobi:antiaddiction:0.0.2-alpha1' // Assets/AASDK/Editor/AASDKDependencies.xml:7
+    implementation 'io.github.yumimobi:antiaddiction:0.0.4' // Assets/AntiAddictionSDK/Editor/AntiAddictionSDKDependencies.xml:7
 // Android Resolver Dependencies End
 **DEPS**}
 
