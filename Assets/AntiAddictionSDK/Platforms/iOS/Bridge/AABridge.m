@@ -18,7 +18,7 @@
 // 0: 未登录
 // 1: 已登录
 - (int)getUserLoginStatus {
-    int loginStaus = [NSNumber numberWithBool:[self.manager isLogined]].intValue;
+    int loginStatus = [NSNumber numberWithBool:[self.manager isLogined]].intValue;
     return loginStatus;
 }
 
