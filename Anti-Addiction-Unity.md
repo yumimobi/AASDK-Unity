@@ -178,9 +178,9 @@ if (antiAddictionSDK != null)
 }
 ```
 ### 3.3.3 Get the status of user authencation
->0: No verified
+0: No verified
 
->1: Has been verified
+1: Has been verified
 
 ```csharp
 if (antiAddictionSDK != null)
@@ -189,13 +189,13 @@ if (antiAddictionSDK != null)
 }
 ```
 ### 3.3.4 Get the left time of current user
->-1 : no time limited
-
->0 : left time of current user
 
 ```csharp
 if (antiAddictionSDK != null)
 {
+    // leftTimeOfCurrentUser = -1 : no time limited
+
+    // leftTimeOfCurrentUser more than the 0 : left time of current user
     int leftTimeOfCurrentUser = antiAddictionSDK.LeftTimeOfCurrentUser();
 }
 ```
