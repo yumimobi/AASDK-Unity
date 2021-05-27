@@ -7,7 +7,7 @@
 
 - 在 iOS 上部署  
   - Xcode 10 或更高版本  
-  - iOS 8.0 或更高版本  
+  - iOS 9.0 或更高版本  
   - [CocoaPods](https://guides.cocoapods.org/using/getting-started.html)  
 
 - 在 Android 上部署
@@ -60,13 +60,11 @@ Unity Play 服务解析器库会将声明的依赖项复制到 Unity 应用的 A
 #### 配置 iOS 参数
 请在info.plist中添加如下参数。
 参数获取请联系产品。
-```
-    <key>gamecode</key>
-    <string>123</string>
+```xml
+    <key>zgameid</key>
+    <string>your game id</string>
     <key>zchannelid</key>
-    <string>123</string>
-    <key>zkey</key>
-    <string>3756116173</string>
+    <string>your channel id</string>
 ```
 
 #### 配置 Android 参数
@@ -87,10 +85,7 @@ using UnityEngine;
 using AntiAddictionSDK.Api;
 using UnityEngine.UI;
 
-public class AASDKDemoScript : MonoBehaviour
-{
-
-
+public class AASDKDemoScript : MonoBehaviour {
 AntiAddictionStytemSDK antiAddictionSDK;
 
   void Start() 
