@@ -1,3 +1,5 @@
+[See the English Guide](https://github.com/yumimobi/AASDK-Unity/blob/master/Anti-Addiction-Unity.md)
+
 # 入门指南
 
 本指南适用于希望通过 Unity 接入中宣部防沉迷功能的发布商。  
