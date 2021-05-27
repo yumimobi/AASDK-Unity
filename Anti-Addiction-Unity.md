@@ -50,7 +50,7 @@ After building, open xcworkspace project.
 
 ### 2.3.2 Deploy to Android 
 
-In the Unity editor, select `Assets > Play Services Resolver > Android Resolver > Force Resolve. The Unity Play Services Resolver library will copy the declared dependencies into the `Assets/Plugins/Android` directory of your Unity app.  
+In the Unity editor, select `Assets > External Dependency Manager > Android Resolver > Force Resolve. The Unity Play Services Resolver library will copy the declared dependencies into the `Assets/Plugins/Android` directory of your Unity app.  
 <img src='resources/force_resolve.png'>
 
 ## 2.4 Config Parametrs

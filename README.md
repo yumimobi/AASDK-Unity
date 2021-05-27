@@ -48,7 +48,7 @@
 
 ##### 2. 部署到 Android  
 
-在 Unity 编辑器中，依次选择 Assets > Play Services Resolver > Android Resolver > Resolve。  
+在 Unity 编辑器中，依次选择 Assets > External Dependency Manager > Android Resolver > Resolve。  
 Unity Play 服务解析器库会将声明的依赖项复制到 Unity 应用的 Assets/Plugins/Android 目录中。  
 
 *注意：防沉迷 Unity 插件依赖项位于 Assets/AntiAddictionSDK/Editor/AntiAddictionSDKDependencies.xml 中*  
