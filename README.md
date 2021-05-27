@@ -22,7 +22,7 @@
 
 请通过如下链接下载该插件的 Unity 软件包，或在 GitHub 上查看其代码。
 
-[下载插件](https://github.com/yumimobi/AntiAddictionSystem-Unity/releases/download/1.0.0/AntiAddictionSystem.unitypackage)  
+[下载插件](https://github.com/yumimobi/AASDK-Unity/releases/download/0.1.13/AASDK.unitypackage)  
 [查看源代码](https://github.com/yumimobi/AASDK-Unity) 
 
 ### 导入防沉迷 Unity 插件
