@@ -22,7 +22,7 @@
 
 请通过如下链接下载该插件的 Unity 软件包，或在 GitHub 上查看其代码。
 
-[下载插件](https://github.com/yumimobi/AASDK-Unity/releases/download/0.1.13/AASDK.unitypackage)  
+[下载插件](https://github.com/yumimobi/AASDK-Unity/releases/download/0.1.14/AASDK.unitypackage)  
 [查看源代码](https://github.com/yumimobi/AASDK-Unity) 
 
 ### 导入防沉迷 Unity 插件
@@ -48,7 +48,7 @@
 
 ##### 2. 部署到 Android  
 
-在 Unity 编辑器中，依次选择 Assets > Play Services Resolver > Android Resolver > Resolve。  
+在 Unity 编辑器中，依次选择 Assets > External Dependency Manager > Android Resolver > Resolve。  
 Unity Play 服务解析器库会将声明的依赖项复制到 Unity 应用的 Assets/Plugins/Android 目录中。  
 
 *注意：防沉迷 Unity 插件依赖项位于 Assets/AntiAddictionSDK/Editor/AntiAddictionSDKDependencies.xml 中*  
@@ -72,7 +72,7 @@ Unity Play 服务解析器库会将声明的依赖项复制到 Unity 应用的 A
 请修改Assets/Plugins/Android/assets/ZplayConfig.xml文件中的参数
 <img src='resources/android-setting.png'>  
 
-`提示：ZplayConfig.xml文件中的GameID，ChannelID，Zplay_SDK_KEY参数，请联系掌游产品获取`
+`提示：ZplayConfig.xml文件中的GameID，ChannelID 参数，请联系掌游产品获取`
 
 
 # 快速接入
