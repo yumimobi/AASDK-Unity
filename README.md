@@ -79,7 +79,7 @@ Unity Play 服务解析器库会将声明的依赖项复制到 Unity 应用的 A
 
 ### 1. 创建 AntiAddictionSDK
 
-```c#
+```csharp
 using System;
 using UnityEngine;
 using AntiAddictionSDK.Api;
@@ -143,7 +143,7 @@ AntiAddictionStytemSDK antiAddictionSDK;
 ### 2. 展示实名认证界面接口
 如果App在主界面有提供给用户实名认证的按钮，当用户点击实名认证按钮后，可调用下面的方法展示实名认证界面
 
-```c#
+```csharp
 if (antiAddictionSDK != null)
 {
     antiAddictionSDK.ShowRealNameView();
@@ -163,7 +163,7 @@ if (antiAddictionSDK != null)
 <b>重要提示：</b> 游戏退到后台接口必须调用，不调用会导致防沉迷SDK计算游戏时长错误
 </span>
 
-```c#
+```csharp
 if (antiAddictionSDK != null)
 {
     antiAddictionSDK.GameOnPause();
@@ -179,7 +179,7 @@ if (antiAddictionSDK != null)
 <b>重要提示：</b> 游戏恢复前台接口必须调用，不调用会导致防沉迷SDK计算游戏时长错误
 </span>
 
-```c#
+```csharp
 if (antiAddictionSDK != null)
 {
     antiAddictionSDK.GameOnResume();
@@ -192,7 +192,8 @@ if (antiAddictionSDK != null)
  0: 未实名认证
  
  1：已实名认证
-```c#
+
+```csharp
 if (antiAddictionSDK != null)
 {
     int authenticatedStatus = antiAddictionSDK.IsAuthenticated();
@@ -205,7 +206,8 @@ if (antiAddictionSDK != null)
 如果为-1，表示当前用户为成年人账号，将不受防沉迷限制
 
 如果为大于0的数，返回的为当前用户的剩余可玩时长，单位秒
-```c#
+
+```csharp
 if (antiAddictionSDK != null)
 {
     int leftTimeOfCurrentUser = antiAddictionSDK.LeftTimeOfCurrentUser();
