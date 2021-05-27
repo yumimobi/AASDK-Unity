@@ -21,7 +21,7 @@ The AntiAddictionSystem Unity plugin enables Unity developers to easily serve An
 
 Use the links below to download the Unity package for the plugin or to take a look at its code on GitHub.  
 
-[Download the Plugin](https://github.com/yumimobi/AASDK-Unity/releases/download/0.1.13/AASDK.unitypackage)    
+[Download the Plugin](https://github.com/yumimobi/AASDK-Unity/releases/download/0.1.14/AASDK.unitypackage)    
 [View Source Code](https://github.com/yumimobi/AASDK-Unity)  
 
 ## 2.2 Import the AntiAddictionSystem Unity plugin  
@@ -70,7 +70,7 @@ You can find the `info.plist` in your Xcode project.
 Modify the prameters in `Assets/Plugins/Android/assets/ZplayConfig.xml` file.
 <img src='resources/android-setting.png'>  
 
-`warning: For GameID, ChannelID, Zplay_SDK_KEY parameters in ZplayConfig.xml file, please contact PM for all of these IDs.`
+`warning: For GameID, ChannelID parameters in ZplayConfig.xml file, please contact PM for all of these IDs.`
 
 # 3. Integration
 ## 3.1 Create AntiAddictionSDK object
@@ -178,8 +178,9 @@ if (antiAddictionSDK != null)
 }
 ```
 ### 3.3.3 Get the status of user authencation
-0: No verified
-1: Has been verified
+>0: No verified
+
+>1: Has been verified
 
 ```csharp
 if (antiAddictionSDK != null)
@@ -188,7 +189,8 @@ if (antiAddictionSDK != null)
 }
 ```
 ### 3.3.4 Get the left time of current user
--1 : no time limited
+>-1 : no time limited
+
 >0 : left time of current user
 
 ```csharp
