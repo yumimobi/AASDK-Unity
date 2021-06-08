@@ -22,8 +22,10 @@ namespace AntiAddictionSDK.iOS
             ManagerClient.AALoginFailCallback loginFailCallback,
             ManagerClient.AAUserAuthSuccessCallback userAuthSuccessCallback,
             ManagerClient.AAUserAuthFailCallback userAuthFailCallback,
+            ManagerClient.AAUserAuthFailWithForceExitCallback userAuthFailWithForceExitCallback,
             ManagerClient.AANoTimeLeftWithTouristsModeCallback noTimeLeftWithTouristsModeCallback,
-            ManagerClient.AANoTimeLeftWithNonageModeCallback noTimeLeftWithNonageModeCallback
+            ManagerClient.AANoTimeLeftWithNonageModeCallback noTimeLeftWithNonageModeCallback,
+            ManagerClient.AALeftTimeOfCurrentUserCallback leftTimeOfCurrentUserCallback
         );
         
         [DllImport("__Internal")]
@@ -33,10 +35,31 @@ namespace AntiAddictionSDK.iOS
         internal static extern int getUserAuthenticationStatus(IntPtr manager);
 
         [DllImport("__Internal")]
+        internal static extern int getUserAgeGroup(IntPtr manager);
+
+        [DllImport("__Internal")]
         internal static extern void presentRealNameAuthController(IntPtr manager);
+
+        [DllImport("__Internal")]
+        internal static extern void presentRealNameAuthControllerWithForceExit(IntPtr manager);
+
+        [DllImport("__Internal")]
+        internal static extern void presentAlertInfoController(IntPtr manager);
+
+        [DllImport("__Internal")]
+        internal static extern void presentCheckDetailInfoController(IntPtr manager);
+
+        [DllImport("__Internal")]
+        internal static extern void presentCashLimitedController(IntPtr manager);
         
         [DllImport("__Internal")]
         internal static extern int checkLeftTimeOfCurrentUser(IntPtr manager);
+
+        [DllImport("__Internal")]
+        internal static extern void stopTimerInUnity(IntPtr manager);
+
+        [DllImport("__Internal")]
+        internal static extern void resumeTimerInUnity(IntPtr manager);
         #endregion
     }
 }

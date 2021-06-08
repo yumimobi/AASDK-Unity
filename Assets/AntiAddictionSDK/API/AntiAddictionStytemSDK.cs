@@ -47,6 +47,13 @@ namespace AntiAddictionSDK.Api
                 }
             };
 
+            client.RealNameAuthenticateFailedWithForceExit += (sender, args) =>
+            {
+                if (RealNameAuthenticateFailedWithForceExit != null) {
+                    RealNameAuthenticateFailedWithForceExit(this, args);
+                }
+            };
+
             client.NoTimeLeftWithTouristsMode += (sender, args) =>
             {
                 if (NoTimeLeftWithTouristsMode != null)
@@ -63,6 +70,13 @@ namespace AntiAddictionSDK.Api
                 }
             };
 
+            client.LeftTimeOfCurrentUserInEverySeconds += (SpriteRenderer, args) =>
+            {
+                if (LeftTimeOfCurrentUserInEverySeconds != null)
+                {
+                    LeftTimeOfCurrentUserInEverySeconds(this, args);
+                }
+            };
         }
 
 
@@ -74,14 +88,16 @@ namespace AntiAddictionSDK.Api
         // 实名认证回调
         // 实名认证成功
         public event EventHandler<EventArgs> RealNameAuthenticateSuccess;
-        // 实名认证失败
+        // 实名认证失败(用户点击暂不认证)
         public event EventHandler<EventArgs> RealNameAuthenticateFailed;
+        // 实名认证失败（用户点击退出游戏）
+        public event EventHandler<EventArgs> RealNameAuthenticateFailedWithForceExit;
         // 游客时长已用完
         public event EventHandler<EventArgs> NoTimeLeftWithTouristsMode;
         // 未成年人时长已用完
         public event EventHandler<EventArgs> NoTimeLeftWithNonageMode;
-
-     
+        // 当前用户剩余时间（每秒回调一次）
+        public event EventHandler<LeftTimeEventArgs> LeftTimeOfCurrentUserInEverySeconds;
 
      
         // 获取当前用户游客登录状态
@@ -100,10 +116,43 @@ namespace AntiAddictionSDK.Api
             return client.IsAuthenticated();
         }
 
+        // 获取当前用户年龄段
+        // 0 未认证
+        // 1 成年人
+        // 2 未成年人
+        public int AgeGroupOfCurrentUser()
+        {
+            return client.AgeGroupOfCurrentUser();
+        }
+
         // 展示实名认证弹窗，如果游戏主界面增加实名认证按钮，用户点击后，可调用此接口显示实名认证界面
         public void ShowRealNameView()
         {
             client.ShowRealNameView();
+        }
+
+        // 展示实名认证界面（退出游戏）
+        public void ShowRealNameViewWithForceExit()
+        {
+            client.ShowRealNameViewWithForceExit();
+        }
+
+        // 展示在线时长提示界面（成年人无需展示）
+        public void ShowAlertInfoController()
+        {
+            client.ShowAlertInfoController();
+        }
+
+        // 展示查看详情界面
+        public void ShowCheckDetailInfoController()
+        {
+            client.ShowCheckDetailInfoController();
+        }
+
+        // 展示消费限制窗口（成年人无限制）
+        public void ShowCashLimitedController()
+        {
+            client.ShowCashLimitedController();
         }
 
         // 获取当前用户剩余可玩时长
@@ -126,6 +175,14 @@ namespace AntiAddictionSDK.Api
             client.GameOnResume();
         }
 
+        public void StopTimerInUnity() 
+        {
+            client.StopTimerInUnity();
+        }
 
+        public void ResumeTimerInUnity()
+        {
+            client.ResumeTimerInUnity();
+        }
     }
 }
