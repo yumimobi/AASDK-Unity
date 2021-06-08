@@ -97,52 +97,68 @@ AntiAddictionStytemSDK antiAddictionSDK;
     antiAddictionSDK.OnTouristsModeLoginFailed += HandleTouristsModeLoginFailed;
     antiAddictionSDK.RealNameAuthenticateSuccess += HandleRealNameAuthenticateSuccess;
     antiAddictionSDK.RealNameAuthenticateFailed += HandleRealNameAuthenticateFailed;
+    antiAddictionSDK.RealNameAuthenticateFailedWithForceExit += HandleRealNameAuthenticateFailedWithForceExit;
     antiAddictionSDK.NoTimeLeftWithTouristsMode += HandleNoTimeLeftWithTouristsMode;
     antiAddictionSDK.NoTimeLeftWithNonageMode += HandleNoTimeLeftWithNonageMode;
+    antiAddictionSDK.LeftTimeOfCurrentUserInEverySeconds += HandleLeftTimeOfCurrentUserInEverySeconds;
   }
 #region AntiAddictionStytemSDK callback handlers
-    //游客登录回调
-    //游客登录成功回调
+    // 游客登录回调
+    // 游客登录成功回调
     public void HandleTouristsModeLoginSuccess(object sender, LoginSuccessEventArgs args)
     {
         //获取游客id
         String touristsID = args.Message;
         print("AntiAddiction---HandleTouristsModeLoginSuccess: " + touristsID);
     }
-    //游客登录失败回调
+    // 游客登录失败回调
     public void HandleTouristsModeLoginFailed(object sender, EventArgs args)
     {
         print("AntiAddiction---HandleTouristsModeLoginFailed");
     }
 
-    //实名认证回调
-    //实名认证成功回调
+    // 实名认证回调
+    // 实名认证成功回调
     public void HandleRealNameAuthenticateSuccess(object sender, EventArgs args)
     {
         print("AntiAddiction---HandleRealNameAuthenticateSuccess");
     }
-    //实名认证失败回调
+    // 用户在实名认证界面点击暂不认证
     public void HandleRealNameAuthenticateFailed(object sender, EventArgs args)
     {
         print("AntiAddiction---HandleRealNameAuthenticateFailed");
     }
 
-     //游客账号可玩时长已结束回调
+    // 用户在实名认证界面点击退出游戏
+    public void HandleRealNameAuthenticateFailedWithForceExit(object sender, EventArgs args)
+    {
+        statusText.text = "HandleRealNameAuthenticateFailedWithForceExit";
+        print("AntiAddiction---HandleRealNameAuthenticateFailedWithForceExit");
+    }
+
+     // 游客账号可玩时长已结束回调
     public void HandleNoTimeLeftWithTouristsMode(object sender, EventArgs args)
     {
         print("AntiAddiction---HandleNoTimeLeftWithTouristsMode");
     }
-    //未成年人可玩时长已结束回调
+    // 未成年人可玩时长已结束回调
     public void HandleNoTimeLeftWithNonageMode(object sender, EventArgs args)
     {
         print("AntiAddiction---HandleNoTimeLeftWithNonageMode");
+    }
+    // 每秒回调当前用户剩余时间一次
+    public void HandleLeftTimeOfCurrentUserInEverySeconds(object sender, LeftTimeEventArgs args)
+    {
+        int leftTime = args.LeftTime;
+        print("AntiAddiction---HandleTouristsModeLoginSuccess: " + leftTime);
+        statusText.text = "HandleTouristsModeLoginSuccess: " + leftTime;
     }
 
 #endregion
 }
 ```  
 
-### 2. 展示实名认证界面接口
+### 2. 展示实名认证界面接口（暂不认证）
 如果App在主界面有提供给用户实名认证的按钮，当用户点击实名认证按钮后，可调用下面的方法展示实名认证界面
 
 ```csharp
@@ -152,8 +168,48 @@ if (antiAddictionSDK != null)
 }
 ```  
 
+### 3. 展示实名认证界面接口（退出游戏）
+使用场景:  
+如果用户点击退出游戏，开发者需要在- (void)clickForceExitButtonOnRealNameAuthController;此回调中展示实名认证获取奖励界面（此界面由开发者自己实现），此界面提供两个交互按钮。  
+退出游戏按钮：点击此按钮退出游戏。  
+实名认证按钮：点击此按钮再次展示SDK提供的实名认证界面。  
+warning： 此时计时器暂停，开发者需要在认证成功回调中重启计时器- (void)resumeTimer;  
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.ShowRealNameViewWithForceExit();
+}
+```  
 
-### 3. 其他接口
+### 4. 展示用户剩余时长提示界面  
+每次进入游戏时调用。（成年人除外）  
+请在登录成功后调用。  
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.ShowAlertInfoController();
+}
+```
+
+### 5. 展示查看详情界面
+显示防沉迷规则
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.ShowCheckDetailInfoController();
+}
+```
+
+### 6. 展示消费限制窗口
+成年人无需展示
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.ShowCashLimitedController();
+}
+```
+
+### 7. 其他接口
 `注：在Android中，3.1及3.2为必须调用接口，3.3及3.4为非必须调用接口；在iOS中，以下接口均为非必须调用接口`
 
 ##### 3.1. 游戏退到后台接口（iOS无需调用）
@@ -216,4 +272,28 @@ if (antiAddictionSDK != null)
 }
 ```
 
+##### 3.5 获取当前用户年龄区间
+0: 未认证  
+1: 成年  
+2: 未成年  
+```csharp
+if (antiAddictionSDK != null)
+{
+    statusText.text = antiAddictionSDK.AgeGroupOfCurrentUser()+"";
+}
+```
 
+##### 3.6 停止计时器
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.StopTimerInUnity();
+}
+```
+##### 3.7 恢复计时器
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.ResumeTimerInUnity();
+}
+```
