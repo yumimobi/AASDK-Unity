@@ -20,20 +20,25 @@ void AASetManagerCallbacks(
         AALoginFailCallback loginFailCallback,
         // 实名认证成功
         AAUserAuthSuccessCallback userAuthSuccessCallback,
-        // 实名认证失败
+        // 实名认证失败(用户点击暂不认证)
         AAUserAuthFailCallback userAuthFailCallback,
+        // 实名认证失败(用户点击退出游戏)
+        AAUserAuthFailWithForceExitCallback userAuthFailWithForceExitCallback,
         // 游客时间已用尽
         AANoTimeLeftWithTouristsModeCallback noTimeLeftWithTouristsModeCallback,
         // 未成年时间已用尽
-        AANoTimeLeftWithNonageModeCallback noTimeLeftWithNonageModeCallback) {
+        AANoTimeLeftWithNonageModeCallback noTimeLeftWithNonageModeCallback,
+        // 每秒回调一次当前用户剩余时间
+        AALeftTimeOfCurrentUserCallback leftTimeOfCurrentUserCallback) {
     AABridge *internalManager = (__bridge AABridge *)manager;
     internalManager.loginSuccessCallback = loginSuccessCallback;
     internalManager.loginFailCallback = loginFailCallback;
     internalManager.userAuthSuccessCallback = userAuthSuccessCallback;
+    internalManager.userAuthFailWithForceExitCallback = userAuthFailWithForceExitCallback;
     internalManager.userAuthFailCallback = userAuthFailCallback;
     internalManager.noTimeLeftWithTouristsModeCallback = noTimeLeftWithTouristsModeCallback;
     internalManager.noTimeLeftWithNonageModeCallback = noTimeLeftWithNonageModeCallback;
-}
+    internalManager.leftTimeOfCurrentUserCallback = leftTimeOfCurrentUserCallback;}
 
 int getUserLoginStatus(AATypeRef manager) {    
     AABridge *internalManager = (__bridge AABridge *)manager;
@@ -45,14 +50,49 @@ int getUserAuthenticationStatus(AATypeRef manager) {
     return [internalManager getUserAuthenticationStatus];
 }
 
+int getUserAgeGroup(AATypeRef manager) {
+    AABridge *internalManager = (__bridge AABridge *)manager;
+    return [internalManager getUserAgeGroup];
+}
+
 void presentRealNameAuthController(AATypeRef manager) {
     AABridge *internalManager = (__bridge AABridge *)manager;
     [internalManager presentRealNameAuthController];
 }
 
+void presentRealNameAuthControllerWithForceExit(AATypeRef manager) {
+    AABridge *internalManager = (__bridge AABridge *)manager;
+    [internalManager presentRealNameAuthControllerWithForceExit];
+}
+
+void presentAlertInfoController(AATypeRef manager) {
+    AABridge *internalManager = (__bridge AABridge *)manager;
+    [internalManager presentAlertInfoController];
+}
+
+void presentCheckDetailInfoController(AATypeRef manager) {
+    AABridge *internalManager = (__bridge AABridge *)manager;
+    [internalManager presentCheckDetailInfoController];
+}
+
+void presentCashLimitedController(AATypeRef manager) {
+    AABridge *internalManager = (__bridge AABridge *)manager;
+    [internalManager presentCashLimitedController];
+}
+
 void checkLeftTimeOfCurrentUser(AATypeRef manager) {
     AABridge *internalManager = (__bridge AABridge *)manager;
     [internalManager checkLeftTimeOfCurrentUser];
+}
+
+void stopTimerInUnity(AATypeRef manager) {
+    AABridge *internalManager = (__bridge AABridge *)manager;
+    [internalManager stopTimerInUnity];
+}
+
+void resumeTimerInUnity(AATypeRef manager) {
+    AABridge *internalManager = (__bridge AABridge *)manager;
+    [internalManager resumeTimerInUnity];
 }
 
 #pragma mark - Other methods
