@@ -20,4 +20,4 @@ typedef void (*AANoTimeLeftWithTouristsModeCallback)(AATypeClientRef *aaClient);
 // 未成年时间已用尽
 typedef void (*AANoTimeLeftWithNonageModeCallback)(AATypeClientRef *aaClient);
 // 每秒回调一次当前用户剩余时间
-typedef void (*AALeftTimeOfCurrentUserCallback)(AATypeClientRef *aaClient);
+typedef void (*AALeftTimeOfCurrentUserCallback)(AATypeClientRef *aaClient, int leftTime);

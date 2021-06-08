@@ -141,7 +141,7 @@
 /// @param ageGroup 是否成年人
 - (void)currentUserInfo:(int)leftTime isAuthenticated:(BOOL)isAuth ageGroup:(AAAgeGroup)ageGroup {
     if (self.leftTimeOfCurrentUserCallback) {
-        self.leftTimeOfCurrentUserCallback(self.client);
+        self.leftTimeOfCurrentUserCallback(self.client, leftTime);
     }
 }
 
