@@ -184,6 +184,10 @@ public class AASDKDemoScript: MonoBehaviour
 
     public void HandleRealNameAuthenticateSuccess(object sender, EventArgs args)
     {
+        if (antiAddictionSDK != null)
+        {
+            antiAddictionSDK.ResumeTimerInUnity();
+        }
         statusText.text = "HandleRealNameAuthenticateSuccess：";
         print("AntiAddiction---HandleRealNameAuthenticateSuccess");
     }
