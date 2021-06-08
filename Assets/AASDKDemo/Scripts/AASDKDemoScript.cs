@@ -112,8 +112,8 @@ public class AASDKDemoScript: MonoBehaviour
     }
 
     // 获取当前用户剩余可玩时长
-    //如果为-1，表示当前用户为成年人账号，将不受防沉迷限制
-    //如果为大于0的数，返回的为当前用户的剩余可玩时长，单位秒
+    // 如果为-1，表示当前用户为成年人账号，将不受防沉迷限制
+    // 如果为大于0的数，返回的为当前用户的剩余可玩时长，单位秒
     public void LeftTimeOfCurrentUser()
     {
         statusText.text = "LeftTimeOfCurrentUser";
