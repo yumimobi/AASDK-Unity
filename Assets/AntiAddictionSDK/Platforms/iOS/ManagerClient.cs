@@ -17,8 +17,10 @@ namespace AntiAddictionSDK.iOS
         internal delegate void AALoginFailCallback(IntPtr managerClient);
         internal delegate void AAUserAuthSuccessCallback(IntPtr managerClient);
         internal delegate void AAUserAuthFailCallback(IntPtr managerClient);
+        internal delegate void AAUserAuthFailWithForceExitCallback(IntPtr managerClient);
         internal delegate void AANoTimeLeftWithTouristsModeCallback(IntPtr managerClient);
         internal delegate void AANoTimeLeftWithNonageModeCallback(IntPtr managerClient);
+        internal delegate void AALeftTimeOfCurrentUserCallback(IntPtr managerClient, int leftTime);
 #endregion
         // 登录回调
         public event EventHandler<LoginSuccessEventArgs> OnTouristsModeLoginSuccess;
@@ -27,9 +29,11 @@ namespace AntiAddictionSDK.iOS
         //实名认证回调
         public event EventHandler<EventArgs> RealNameAuthenticateSuccess;
         public event EventHandler<EventArgs> RealNameAuthenticateFailed;
+        public event EventHandler<EventArgs> RealNameAuthenticateFailedWithForceExit;
         
         public event EventHandler<EventArgs> NoTimeLeftWithTouristsMode;
         public event EventHandler<EventArgs> NoTimeLeftWithNonageMode;
+        public event EventHandler<LeftTimeEventArgs> LeftTimeOfCurrentUserInEverySeconds;
 
         public ManagerClient()
         {
@@ -42,8 +46,10 @@ namespace AntiAddictionSDK.iOS
                 loginFailCallback,
                 userAuthSuccessCallback,
                 userAuthFailCallback,
+                userAuthFailWithForceExitCallback,
                 noTimeLeftWithTouristsModeCallback,
-                noTimeLeftWithNonageModeCallback
+                noTimeLeftWithNonageModeCallback,
+                leftTimeOfCurrentUserInEverySecondsCallback
             );
         }
 
@@ -72,9 +78,34 @@ namespace AntiAddictionSDK.iOS
             return Externs.getUserAuthenticationStatus(managerPtr);
         }
 
+        public int AgeGroupOfCurrentUser() 
+        {
+            return Externs.getUserAgeGroup(managerPtr);
+        }
+
         public void ShowRealNameView()
         {
             Externs.presentRealNameAuthController(managerPtr);
+        }
+
+        public void ShowRealNameViewWithForceExit()
+        {
+            Externs.presentRealNameAuthControllerWithForceExit(managerPtr);
+        }
+
+        public void ShowAlertInfoController()
+        {
+            Externs.presentAlertInfoController(managerPtr);
+        }
+
+        public void ShowCheckDetailInfoController()
+        {
+            Externs.presentCheckDetailInfoController(managerPtr);
+        }
+
+        public void ShowCashLimitedController()
+        {
+            Externs.presentCashLimitedController(managerPtr);
         }
 
         public int LeftTimeOfCurrentUser()
@@ -88,6 +119,16 @@ namespace AntiAddictionSDK.iOS
 
         public void GameOnResume()
         {
+        }
+
+        public void StopTimerInUnity()
+        {
+            Externs.stopTimerInUnity(managerPtr);
+        }
+
+        public void ResumeTimerInUnity()
+        {
+            Externs.resumeTimerInUnity(managerPtr);
         }
 #endregion
 
@@ -136,6 +177,16 @@ namespace AntiAddictionSDK.iOS
             }
         }
 
+        [MonoPInvokeCallback(typeof(AAUserAuthFailWithForceExitCallback))]
+        private static void userAuthFailWithForceExitCallback(IntPtr managerClient)
+        {
+            ManagerClient client = IntPtrToManagerClient(managerClient);
+            if (client.RealNameAuthenticateFailedWithForceExit != null)
+            {
+                client.RealNameAuthenticateFailedWithForceExit(client, EventArgs.Empty);
+            }
+        }
+
         [MonoPInvokeCallback(typeof(AANoTimeLeftWithTouristsModeCallback))]
         private static void noTimeLeftWithTouristsModeCallback(IntPtr managerClient)
         {
@@ -153,6 +204,20 @@ namespace AntiAddictionSDK.iOS
             if (client.NoTimeLeftWithNonageMode != null)
             {
                 client.NoTimeLeftWithNonageMode(client, EventArgs.Empty);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(AALeftTimeOfCurrentUserCallback))]
+        private static void leftTimeOfCurrentUserInEverySecondsCallback(IntPtr managerClient, int leftTime)
+        {
+            ManagerClient client = IntPtrToManagerClient(managerClient);
+            LeftTimeEventArgs args = new LeftTimeEventArgs()
+                {
+                    LeftTime = leftTime
+                };
+            if (client.LeftTimeOfCurrentUserInEverySeconds != null)
+            {
+                client.LeftTimeOfCurrentUserInEverySeconds(client, args);
             }
         }
         

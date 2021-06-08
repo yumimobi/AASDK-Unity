@@ -18,9 +18,10 @@ public class AASDKDemoScript: MonoBehaviour
         antiAddictionSDK.OnTouristsModeLoginFailed += HandleTouristsModeLoginFailed;
         antiAddictionSDK.RealNameAuthenticateSuccess += HandleRealNameAuthenticateSuccess;
         antiAddictionSDK.RealNameAuthenticateFailed += HandleRealNameAuthenticateFailed;
+        antiAddictionSDK.RealNameAuthenticateFailedWithForceExit += HandleRealNameAuthenticateFailedWithForceExit;
         antiAddictionSDK.NoTimeLeftWithTouristsMode += HandleNoTimeLeftWithTouristsMode;
         antiAddictionSDK.NoTimeLeftWithNonageMode += HandleNoTimeLeftWithNonageMode;
-        
+        antiAddictionSDK.LeftTimeOfCurrentUserInEverySeconds += HandleLeftTimeOfCurrentUserInEverySeconds;
     }
 
     // 获取当前用户游客登录状态
@@ -47,6 +48,19 @@ public class AASDKDemoScript: MonoBehaviour
         }
     }
 
+    // 获取当前用户年龄段
+    // 0 未认证
+    // 1 成年人
+    // 2 未成年人
+    public void GetUserAgeGroup()
+    {
+        statusText.text = "GetUserAgeGroup";
+        if (antiAddictionSDK != null)
+        {
+            statusText.text = antiAddictionSDK.AgeGroupOfCurrentUser()+"";
+        }
+    }
+
     // 展示实名认证弹窗，如果游戏主界面增加实名认证按钮，用户点击后，可调用此接口显示实名认证界面
     public void ShowRealNameView()
     {
@@ -54,6 +68,46 @@ public class AASDKDemoScript: MonoBehaviour
         if (antiAddictionSDK != null)
         {
             antiAddictionSDK.ShowRealNameView();
+        }
+    }
+
+    // 展示实名认证界面（退出游戏）
+    public void ShowRealNameViewWithForceExit()
+    {
+        statusText.text = "ShowRealNameViewWithForceExit";
+        if (antiAddictionSDK != null)
+        {
+            antiAddictionSDK.ShowRealNameViewWithForceExit();
+        }
+    }
+
+    // 展示已在线时长提示界面
+    public void ShowAlertInfoController()
+    {
+        statusText.text = "ShowAlertInfoController";
+        if (antiAddictionSDK != null)
+        {
+            antiAddictionSDK.ShowAlertInfoController();
+        }
+    }
+
+    // 展示查看详情界面
+    public void ShowCheckDetailInfoController()
+    {
+        statusText.text = "ShowCheckDetailInfoController";
+        if (antiAddictionSDK != null)
+        {
+            antiAddictionSDK.ShowCheckDetailInfoController();
+        }
+    }
+
+    // 展示消费限制窗口
+    public void ShowCashLimitedController()
+    {
+        statusText.text = "ShowCashLimitedController";
+        if (antiAddictionSDK != null)
+        {
+            antiAddictionSDK.ShowCashLimitedController();
         }
     }
 
@@ -66,6 +120,26 @@ public class AASDKDemoScript: MonoBehaviour
         if (antiAddictionSDK != null)
         {
             statusText.text = antiAddictionSDK.LeftTimeOfCurrentUser()+"";
+        }
+    }
+
+    // 暂停计时器
+    public void StopTimerInUnity()
+    {
+        statusText.text = "StopTimerInUnity";
+        if (antiAddictionSDK != null)
+        {
+            antiAddictionSDK.StopTimerInUnity();
+        }
+    }
+
+    // 恢复计时器
+    public void ResumeTimerInUnity()
+    {
+        statusText.text = "ResumeTimerInUnity";
+        if (antiAddictionSDK != null)
+        {
+            antiAddictionSDK.ResumeTimerInUnity();
         }
     }
 
@@ -110,6 +184,10 @@ public class AASDKDemoScript: MonoBehaviour
 
     public void HandleRealNameAuthenticateSuccess(object sender, EventArgs args)
     {
+        if (antiAddictionSDK != null)
+        {
+            antiAddictionSDK.ResumeTimerInUnity();
+        }
         statusText.text = "HandleRealNameAuthenticateSuccess：";
         print("AntiAddiction---HandleRealNameAuthenticateSuccess");
     }
@@ -120,6 +198,11 @@ public class AASDKDemoScript: MonoBehaviour
         print("AntiAddiction---HandleRealNameAuthenticateFailed");
     }
 
+    public void HandleRealNameAuthenticateFailedWithForceExit(object sender, EventArgs args)
+    {
+        statusText.text = "HandleRealNameAuthenticateFailedWithForceExit";
+        print("AntiAddiction---HandleRealNameAuthenticateFailedWithForceExit");
+    }
 
     public void HandleNoTimeLeftWithTouristsMode(object sender, EventArgs args)
     {
@@ -133,6 +216,12 @@ public class AASDKDemoScript: MonoBehaviour
         print("AntiAddiction---HandleNoTimeLeftWithNonageMode");
     }
 
+    public void HandleLeftTimeOfCurrentUserInEverySeconds(object sender, LeftTimeEventArgs args)
+    {
+        int leftTime = args.LeftTime;
+        print("AntiAddiction---HandleTouristsModeLoginSuccess: " + leftTime);
+        statusText.text = "HandleTouristsModeLoginSuccess: " + leftTime;
+    }
     #endregion
 
 }

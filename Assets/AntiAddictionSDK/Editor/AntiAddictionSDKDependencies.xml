@@ -8,7 +8,7 @@
   </androidPackages>
 
   <iosPods>
-    <iosPod name="AAManager" version="~> 0.1.14" minTargetSdk="9.0">
+    <iosPod name="AAManager" version="~> 0.4.1" minTargetSdk="9.0">
     </iosPod>
   </iosPods>
 </dependencies>
