@@ -12,12 +12,22 @@ public interface UnityAntiAddictionListener {
 
     void onTouristsModeLoginFailed();
 
-    void realNameAuthenticateSuccess();
+    void realNameAuthenticateSuccess(String isAdult);
 
     void realNameAuthenticateFailed();
 
     void noTimeLeftWithTouristsMode();
 
     void noTimeLeftWithNonageMode();
+
+    void onClickExitGameButton();
+
+    void onClickTempLeaveButton();
+
+    void onCurrentUserCanPay();
+
+    void onCurrentUserBanPay();
+
+    void onCurrentUserInfo(int leftTime, String isAuth, String isAdult);
 
 }
