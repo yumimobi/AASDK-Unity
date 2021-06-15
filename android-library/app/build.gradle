@@ -30,7 +30,7 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'io.github.yumimobi:antiaddiction:0.0.2-alpha1'
+    implementation 'io.github.yumimobi:antiaddiction:0.0.8-alpha16'
 
 }
 

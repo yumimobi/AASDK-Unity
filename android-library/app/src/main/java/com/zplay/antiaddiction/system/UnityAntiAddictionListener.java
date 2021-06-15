@@ -20,4 +20,14 @@ public interface UnityAntiAddictionListener {
 
     void noTimeLeftWithNonageMode();
 
+    void onClickExitGameButton();
+
+    void onClickTempLeaveButton();
+
+    void onCurrentUserCanPay();
+
+    void onCurrentUserBanPay();
+
+    void onCurrentUserInfo(int leftTime, int isAuth, int isAdult);
+
 }

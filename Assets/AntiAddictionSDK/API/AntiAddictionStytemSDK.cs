@@ -163,6 +163,12 @@ namespace AntiAddictionSDK.Api
             return client.LeftTimeOfCurrentUser();
         }
 
+        //设置Android渠道userId（Android 华为，联想渠道需要调用）
+        //为兼容华为,联想渠道的防沉迷SDK，当游戏调用华为，联想渠道SDK登录成功，并且获取到了账号Id之后，请调用下面的接口
+        public void SetChannelUserId(string userId) {
+            client.SetChannelUserId(userId);
+        }
+
         //游戏退到后台时调用
         public void GameOnPause()
         {

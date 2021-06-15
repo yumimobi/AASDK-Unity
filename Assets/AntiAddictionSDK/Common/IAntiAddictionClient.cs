@@ -65,6 +65,10 @@ namespace AntiAddictionSDK.Common
         // 获取当前用户剩余可玩时长，如果为-1，表示当前用户为成年人账号，将不受防沉迷限制,如果为大于0的数，返回的为当前用户的剩余可玩时长，单位秒
         int LeftTimeOfCurrentUser();
 
+        //设置Android渠道userId（Android 华为，联想渠道需要调用）
+        //为兼容华为,联想渠道的防沉迷SDK，当游戏调用华为，联想渠道SDK登录成功，并且获取到了账号Id之后，请调用下面的接口
+        void SetChannelUserId(string userId);
+
         //游戏退到后台时调用（iOS 不需要）
         void GameOnPause();
 

@@ -18,6 +18,8 @@ namespace AntiAddictionSDK.Android
         public event EventHandler<EventArgs> RealNameAuthenticateFailed = delegate { };
         public event EventHandler<EventArgs> NoTimeLeftWithTouristsMode = delegate { };
         public event EventHandler<EventArgs> NoTimeLeftWithNonageMode = delegate { };
+        public event EventHandler<EventArgs> RealNameAuthenticateFailedWithForceExit = delegate { };
+        public event EventHandler<LeftTimeEventArgs> LeftTimeOfCurrentUserInEverySeconds = delegate { };
 
 
         public AntiAddictionClient() : base(Utils.UnityAntiAddictionListenerClassName)
@@ -51,6 +53,36 @@ namespace AntiAddictionSDK.Android
             return antiAddictionSDK.Call<int>("leftTimeOfCurrentUser");
         }
 
+        public int AgeGroupOfCurrentUser()
+        {
+            return antiAddictionSDK.Call<int>("isAdult");
+        }
+
+        public void ShowRealNameViewWithForceExit()
+        {
+            antiAddictionSDK.Call("showForceExitRealNameDialog");
+        }
+
+        public void ShowAlertInfoController()
+        {
+            antiAddictionSDK.Call("showAntiAddictionPromptDialog");
+        }
+
+        public void ShowCheckDetailInfoController() {
+            antiAddictionSDK.Call("showTimeTipsDialog");
+        }
+
+        public void ShowCashLimitedController()
+        {
+            antiAddictionSDK.Call("checkPay");
+        }
+
+        public void SetChannelUserId(string userId)
+        {
+            antiAddictionSDK.Call("setChannelUserId", userId);
+        }
+
+
         public void GameOnPause()
         {
             antiAddictionSDK.Call("onPause");
@@ -60,6 +92,17 @@ namespace AntiAddictionSDK.Android
         {
             antiAddictionSDK.Call("onResume");
         }
+
+        public void StopTimerInUnity()
+        {
+            antiAddictionSDK.Call("onPause");
+        }
+
+        public void ResumeTimerInUnity()
+        {
+            antiAddictionSDK.Call("onResume");
+        }
+
 
         #endregion
 
@@ -118,6 +161,19 @@ namespace AntiAddictionSDK.Android
             if (NoTimeLeftWithNonageMode != null)
             {
                 NoTimeLeftWithNonageMode(this, EventArgs.Empty);
+            }
+        }
+
+        void onCurrentUserInfo(int leftTime, int isAuth, int isAdult)
+        {
+            Debug.Log("-----onCurrentUserInfo touristsID: " + leftTime);
+            if (LeftTimeOfCurrentUserInEverySeconds != null)
+            {
+                LeftTimeEventArgs args = new LeftTimeEventArgs()
+                {
+                    LeftTime = leftTime
+                };
+                LeftTimeOfCurrentUserInEverySeconds(this, args);
             }
         }
         #endregion

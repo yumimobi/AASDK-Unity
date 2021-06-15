@@ -113,6 +113,10 @@ namespace AntiAddictionSDK.iOS
             return Externs.checkLeftTimeOfCurrentUser(managerPtr);
         }
 
+        public void SetChannelUserId(string userId)
+        {
+        }
+
         public void GameOnPause()
         {
         }

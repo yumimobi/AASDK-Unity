@@ -1,10 +1,16 @@
 package com.zplay.antiaddiction.system;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 
 import com.android.antiaddiction.callback.AntiAddictionCallback;
 import com.android.antiaddiction.system.AntiAddictionSystemSDK;
+import com.android.antiaddiction.utils.ToastUtils;
+import com.android.antiaddiction.utils.enumbean.AgeGroup;
+
+import static com.android.antiaddiction.utils.SPValueHandler.getAgeGroup;
 
 
 /**
@@ -60,17 +66,26 @@ public class AntiAddictionSDK {
                     }
 
                     @Override
-                    public void realNameAuthenticateResult(final boolean isSuccess) {
+                    public void realNameAuthenticateSuccess() {
                         if (listener != null && activity != null) {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Log.i(TAG, "realNameAuthenticateResult :" + isSuccess);
-                                    if (isSuccess) {
-                                        listener.realNameAuthenticateSuccess();
-                                    } else {
-                                        listener.realNameAuthenticateFailed();
-                                    }
+                                    Log.i(TAG, "realNameSuccess isAdult :");
+                                    listener.realNameAuthenticateSuccess();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void realNameAuthenticateFailed() {
+                        if (listener != null && activity != null) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.i(TAG, "realNameSuccess Failed");
+                                    listener.realNameAuthenticateFailed();
                                 }
                             });
                         }
@@ -107,12 +122,94 @@ public class AntiAddictionSDK {
                             });
                         }
                     }
+
+                    @Override
+                    public void onCurrentUserInfo(final long leftTime, final boolean isAuth, final AgeGroup ageGroup) {
+                        if (listener != null && activity != null) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.i(TAG, "onCurrentUserInfo:");
+                                    int iLeftTime = Integer.valueOf(leftTime + "");
+                                    int isAuthed = isAuth ? 1 : 0;
+                                    listener.onCurrentUserInfo(iLeftTime, isAuthed, ageGroup.getType());
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onClickExitGameButton() {
+                        if (listener != null && activity != null) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.i(TAG, "onClickExitGameButton:");
+                                    listener.onClickExitGameButton();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onClickTempLeaveButton() {
+                        if (listener != null && activity != null) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.i(TAG, "onClickTempLeaveButton:");
+                                    listener.onClickTempLeaveButton();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCurrentUserCanPay() {
+                        if (listener != null && activity != null) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.i(TAG, "onCurrentUserCanPay");
+                                    listener.onCurrentUserCanPay();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCurrentUserBanPay() {
+                        if (listener != null && activity != null) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.i(TAG, "onCurrentUserBanPay");
+                                    listener.onCurrentUserBanPay();
+                                }
+                            });
+                        }
+                    }
                 });
 
 
             }
         });
 
+    }
+
+    // 防沉迷提示弹窗界面
+    // 游戏可主动调用
+    // 游戏进入主界面之后，调用下面的接口，给未实名或者未成年人介绍实名认证规范
+    public void showAntiAddictionPromptDialog() {
+        Log.i(TAG, "showAntiAddictionPromptDialog");
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (AntiAddictionSystemSDK.isLogined(activity)) {
+                    AntiAddictionSystemSDK.showAlertInfoDialog(activity);
+                }
+            }
+        });
     }
 
     // 实名认证界面
@@ -124,6 +221,18 @@ public class AntiAddictionSDK {
             @Override
             public void run() {
                 AntiAddictionSystemSDK.showRealNameDialog(activity);
+            }
+        });
+    }
+
+    // 实名认证界面
+    // 游戏可主动调用
+    // 显示带退出游戏按钮的实名认证界面
+    public void showForceExitRealNameDialog() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AntiAddictionSystemSDK.showForceExitRealNameDialog(activity);
             }
         });
     }
@@ -146,9 +255,51 @@ public class AntiAddictionSDK {
         }
     }
 
+
+    public int isAdult() {
+        Log.i(TAG, "isAdult");
+        // unknown: 未实名认证
+        // adult: 成年
+        // nonage: 未成年
+        return AntiAddictionSystemSDK.isAdult(activity).getType();
+    }
+
+    //显示剩余游戏时长说明弹窗
+    public void showTimeTipsDialog() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "showTimeTipsDialog");
+                AntiAddictionSystemSDK.showTimeTipsDialog(activity);
+            }
+        });
+    }
+
+
     public int leftTimeOfCurrentUser() {
         Log.i(TAG, "leftTimeOfCurrentUser");
         return Integer.valueOf(AntiAddictionSystemSDK.leftTimeOfCurrentUser(activity) + "");
+    }
+
+    public void setChannelUserId(final String userId) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "setChannelUserId");
+                AntiAddictionSystemSDK.setChannelUserId(activity, userId);
+            }
+        });
+    }
+
+    //检测当前用户是否能购买计费
+    public void checkPay() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "checkPay");
+                AntiAddictionSystemSDK.checkCurrentUserPay(activity);
+            }
+        });
     }
 
 
