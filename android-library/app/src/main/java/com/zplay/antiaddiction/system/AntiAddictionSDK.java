@@ -8,6 +8,7 @@ import android.view.View;
 import com.android.antiaddiction.callback.AntiAddictionCallback;
 import com.android.antiaddiction.system.AntiAddictionSystemSDK;
 import com.android.antiaddiction.utils.ToastUtils;
+import com.android.antiaddiction.utils.enumbean.AgeGroup;
 
 import static com.android.antiaddiction.utils.SPValueHandler.getAgeGroup;
 
@@ -65,13 +66,13 @@ public class AntiAddictionSDK {
                     }
 
                     @Override
-                    public void realNameAuthenticateSuccess(final String isAdult) {
+                    public void realNameAuthenticateSuccess() {
                         if (listener != null && activity != null) {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Log.i(TAG, "realNameSuccess isAdult :" + isAdult);
-                                    listener.realNameAuthenticateSuccess(isAdult);
+                                    Log.i(TAG, "realNameSuccess isAdult :");
+                                    listener.realNameAuthenticateSuccess();
                                 }
                             });
                         }
@@ -123,15 +124,15 @@ public class AntiAddictionSDK {
                     }
 
                     @Override
-                    public void onCurrentUserInfo(final long leftTime, final boolean isAuth, final String isAdult) {
+                    public void onCurrentUserInfo(final long leftTime, final boolean isAuth, final AgeGroup ageGroup) {
                         if (listener != null && activity != null) {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     Log.i(TAG, "onCurrentUserInfo:");
                                     int iLeftTime = Integer.valueOf(leftTime + "");
-                                    String isAuthed = isAuth ? "1" : "0";
-                                    listener.onCurrentUserInfo(iLeftTime, isAuthed, isAdult);
+                                    int isAuthed = isAuth ? 1 : 0;
+                                    listener.onCurrentUserInfo(iLeftTime, isAuthed, ageGroup.getType());
                                 }
                             });
                         }
@@ -255,12 +256,12 @@ public class AntiAddictionSDK {
     }
 
 
-    public String isAdult() {
+    public int isAdult() {
         Log.i(TAG, "isAdult");
         // unknown: 未实名认证
         // adult: 成年
         // nonage: 未成年
-        return AntiAddictionSystemSDK.isAdult(activity);
+        return AntiAddictionSystemSDK.isAdult(activity).getType();
     }
 
     //显示剩余游戏时长说明弹窗
@@ -278,6 +279,27 @@ public class AntiAddictionSDK {
     public int leftTimeOfCurrentUser() {
         Log.i(TAG, "leftTimeOfCurrentUser");
         return Integer.valueOf(AntiAddictionSystemSDK.leftTimeOfCurrentUser(activity) + "");
+    }
+
+    public void setChannelUserId(final String userId) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "setChannelUserId");
+                AntiAddictionSystemSDK.setChannelUserId(activity, userId);
+            }
+        });
+    }
+
+    //检测当前用户是否能购买计费
+    public void checkPay() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "checkPay");
+                AntiAddictionSystemSDK.checkCurrentUserPay(activity);
+            }
+        });
     }
 
 

@@ -12,7 +12,7 @@ public interface UnityAntiAddictionListener {
 
     void onTouristsModeLoginFailed();
 
-    void realNameAuthenticateSuccess(String isAdult);
+    void realNameAuthenticateSuccess();
 
     void realNameAuthenticateFailed();
 
@@ -28,6 +28,6 @@ public interface UnityAntiAddictionListener {
 
     void onCurrentUserBanPay();
 
-    void onCurrentUserInfo(int leftTime, String isAuth, String isAdult);
+    void onCurrentUserInfo(int leftTime, int isAuth, int isAdult);
 
 }
