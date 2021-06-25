@@ -21,7 +21,7 @@ The AntiAddictionSystem Unity plugin enables Unity developers to easily serve An
 
 Use the links below to download the Unity package for the plugin or to take a look at its code on GitHub.  
 
-[Download the Plugin](https://github.com/yumimobi/AASDK-Unity/releases/download/0.1.14/AASDK.unitypackage)    
+[Download the Plugin](https://github.com/yumimobi/AASDK-Unity/releases/download/1.0.0/AASDK.unitypackage)    
 [View Source Code](https://github.com/yumimobi/AASDK-Unity)  
 
 ## 2.2 Import the AntiAddictionSystem Unity plugin  
@@ -91,8 +91,10 @@ AntiAddictionStytemSDK antiAddictionSDK;
     antiAddictionSDK.OnTouristsModeLoginFailed += HandleTouristsModeLoginFailed;
     antiAddictionSDK.RealNameAuthenticateSuccess += HandleRealNameAuthenticateSuccess;
     antiAddictionSDK.RealNameAuthenticateFailed += HandleRealNameAuthenticateFailed;
+    antiAddictionSDK.RealNameAuthenticateFailedWithForceExit += HandleRealNameAuthenticateFailedWithForceExit;
     antiAddictionSDK.NoTimeLeftWithTouristsMode += HandleNoTimeLeftWithTouristsMode;
     antiAddictionSDK.NoTimeLeftWithNonageMode += HandleNoTimeLeftWithNonageMode;
+    antiAddictionSDK.LeftTimeOfCurrentUserInEverySeconds += HandleLeftTimeOfCurrentUserInEverySeconds;
   }
 #region AntiAddictionStytemSDK callback handlers
     // Tourist login success event
@@ -121,6 +123,14 @@ AntiAddictionStytemSDK antiAddictionSDK;
         print("AntiAddiction---HandleRealNameAuthenticateFailed");
     }
 
+
+     // The user clicks to exit the game on the real-name authentication interface
+    public void HandleRealNameAuthenticateFailedWithForceExit(object sender, EventArgs args)
+    {
+        statusText.text = "HandleRealNameAuthenticateFailedWithForceExit";
+        print("AntiAddiction---HandleRealNameAuthenticateFailedWithForceExit");
+    }
+
     // This method will be called when the tourist mode runs out of time 
     // Will present the real name authentication controller after 3 second
     public void HandleNoTimeLeftWithTouristsMode(object sender, EventArgs args)
@@ -134,11 +144,20 @@ AntiAddictionStytemSDK antiAddictionSDK;
         print("AntiAddiction---HandleNoTimeLeftWithNonageMode");
     }
 
+    // Callback current user info
+    // leftTime: remaining playable time，-1 means adult, unlimited
+    public void HandleLeftTimeOfCurrentUserInEverySeconds(object sender, LeftTimeEventArgs args)
+    {
+        int leftTime = args.LeftTime;
+        print("AntiAddiction---HandleTouristsModeLoginSuccess: " + leftTime);
+        statusText.text = "HandleTouristsModeLoginSuccess: " + leftTime;
+    }
+
 #endregion
 }
 ```  
 
-## 3.2 Present authentication controller
+## 3.2 Show Real-name authentication in the tourist mode （Users can click not to authenticate）
 The game should provide a real name authentication button. 
 Call this method when the user clicks.
 
@@ -149,13 +168,71 @@ if (antiAddictionSDK != null)
 }
 ```  
 
-## 3.3 Other API
+### 3.3 Show Real-name authentication  in the tourist mode （Users can't click not to authenticate，only can click exit game) 
+scenes to be used:
+If the user clicks to exit the game, the developer needs to display the real-name authentication obtaining reward interface in - (void)clickForceExitButtonOnRealNameAuthController;; this callback (this interface is implemented by the developer), this interface provides two interactive buttons.
+Quit game button: Click this button to quit the game.
+Real-name authentication button: Click this button to show the real-name authentication interface provided by the SDK again.
+
+warning： At this time, the timer is paused, and the developer needs to restart the timer in the authentication success callback-(void)resumeTimer; 
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.ShowRealNameViewWithForceExit();
+}
+``` 
+
+### 3.4 Show the remaining time reminder for tourists and minors
+Every time you enter the main interface of the game, show the online time reminder interface for tourists and minor users
+This interface is called by the game after initialization.
+It is necessary to determine that the SDK is logged in. If the SDK is not logged in, it will be called in the callback of successful SDK login.
+Adults do not need to show this interface. 
+
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.ShowAlertInfoController();
+}
+```
+
+### 3.5 Show view details interface (Optional)
+This interface displays the relevant rules of the Central Propaganda Department on the anti-addiction policy
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.ShowCheckDetailInfoController();
+}
+```
+
+### 3.6 Detect consumption limit (Optional)
+Not logged in and minors cannot pay in the game, and the consumption restriction interface will be displayed.
+No limit for adults
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.ShowCashLimitedController();
+}
+```
+
+## 3.7 Set the channel UserId interface (required for Huawei and Lenovo channels)
+In order to be compatible with Huawei, Lenovo’s channel login and payment SDK is compatible with real-name authentication. The game needs to call the following interface to set the channel UserId after Huawei Lenovo logs in.
+
+Note: Huawei and Lenovo channel anti-addiction function will only be activated after calling the interface below, otherwise it will not activate any function of the anti-addiction SDK
+```java
+//userId:User ID returned by Huawei and Lenovo channel login SDK
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.SetChannelUserId(userId);
+}
+```
+
+## 4 Other API
 
 <span style="color:rgb(150,0,0);">
 <b>Warning:</b> 3.1 and 3.2 is required by Android.
 </span>
 
-### 3.3.1 Application will enter background
+### 4.1 Application will enter background
 <span style="color:rgb(255,0,0);">
 <b>warning:</b> IS required by android
 </span>
@@ -166,7 +243,7 @@ if (antiAddictionSDK != null)
     antiAddictionSDK.GameOnPause();
 }
 ```
-### 3.3.2 Application will enter foreground
+### 4.2 Application will enter foreground
 <span style="color:rgb(255,0,0);">
 <b>warning:</b> IS required by android
 </span>
@@ -177,7 +254,7 @@ if (antiAddictionSDK != null)
     antiAddictionSDK.GameOnResume();
 }
 ```
-### 3.3.3 Get the status of user authencation
+### 4.3 Get the status of user authencation
 0: No verified
 
 1: Has been verified
@@ -188,7 +265,7 @@ if (antiAddictionSDK != null)
     int authenticatedStatus = antiAddictionSDK.IsAuthenticated();
 }
 ```
-### 3.3.4 Get the left time of current user
+### 4.4 Get the left time of current user
 
 ```csharp
 if (antiAddictionSDK != null)
@@ -197,5 +274,31 @@ if (antiAddictionSDK != null)
 
     // leftTimeOfCurrentUser more than the 0 : left time of current user
     int leftTimeOfCurrentUser = antiAddictionSDK.LeftTimeOfCurrentUser();
+}
+```
+
+##### 4.5 Check user is adult(Optional) 
+// 0: unknown
+// 1: adult
+// 2: nonage
+```csharp
+if (antiAddictionSDK != null)
+{
+    statusText.text = antiAddictionSDK.AgeGroupOfCurrentUser()+"";
+}
+```
+
+##### 4.6 StopTimer
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.StopTimerInUnity();
+}
+```
+##### 4.7 ResumeTimer
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.ResumeTimerInUnity();
 }
 ```
