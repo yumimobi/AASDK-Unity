@@ -1,16 +1,11 @@
 package com.zplay.antiaddiction.system;
 
 import android.app.Activity;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 
 import com.android.antiaddiction.callback.AntiAddictionCallback;
 import com.android.antiaddiction.system.AntiAddictionSystemSDK;
-import com.android.antiaddiction.utils.ToastUtils;
 import com.android.antiaddiction.utils.enumbean.AgeGroup;
-
-import static com.android.antiaddiction.utils.SPValueHandler.getAgeGroup;
 
 
 /**
@@ -29,6 +24,7 @@ public class AntiAddictionSDK {
         this.activity = activity;
         this.listener = listener;
         init();
+
     }
 
     //初始化接口
