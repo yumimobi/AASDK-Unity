@@ -77,6 +77,14 @@ namespace AntiAddictionSDK.Api
                     LeftTimeOfCurrentUserInEverySeconds(this, args);
                 }
             };
+
+            client.OnCheckNewUseSuccess += (sender, args) =>
+            {
+                if (OnCheckNewUseSuccess != null)
+                {
+                    OnCheckNewUseSuccess(this, args);
+                }
+            };
         }
 
 
@@ -98,8 +106,10 @@ namespace AntiAddictionSDK.Api
         public event EventHandler<EventArgs> NoTimeLeftWithNonageMode;
         // 当前用户剩余时间（每秒回调一次）
         public event EventHandler<LeftTimeEventArgs> LeftTimeOfCurrentUserInEverySeconds;
+        //检查用户分组（查看是否新老用户）
+        public event EventHandler<CheckNewUseEventArgs> OnCheckNewUseSuccess;
 
-     
+
         // 获取当前用户游客登录状态
         // 0: 已登录
         // 1: 未登录
@@ -180,15 +190,36 @@ namespace AntiAddictionSDK.Api
         {
             client.GameOnResume();
         }
-
+        // 暂停计时器
         public void StopTimerInUnity() 
         {
             client.StopTimerInUnity();
         }
-
+        // 恢复计时器
         public void ResumeTimerInUnity()
         {
             client.ResumeTimerInUnity();
+        }
+
+        //查询用户分组,无账号系统传null，有账号系统传输用户id
+        public void CheckNewUserInUnity(string zplayId = "null")
+        {
+            client.CheckNewUserInUnity(zplayId);
+        }
+
+        //查询是否老用户
+        //0:新用户
+        //1:老用户
+        public int IsOldUserInUnity()
+        {
+            return client.IsOldUserInUnity();
+        }
+
+        //更新防沉迷信息
+        //无账号系统无需调用，有账号系统在游戏中切换账号需要更新防沉迷信息
+        public void UpdateDataReportInUnity()
+        {
+            client.UpdateDataReportInUnity();
         }
     }
 }

@@ -23,6 +23,8 @@
 @property(nonatomic, assign) AANoTimeLeftWithNonageModeCallback noTimeLeftWithNonageModeCallback;
 // 每秒回调一次剩余时间
 @property(nonatomic, assign) AALeftTimeOfCurrentUserCallback leftTimeOfCurrentUserCallback;
+// 每秒回调一次剩余时间
+@property(nonatomic, assign) AACheckNewUseSuccessCallback checkNewUseSuccessCallback;
 
 // 获取当前用户登录状态
 // 0: 未登录
@@ -64,4 +66,15 @@
 // 恢复计时器
 - (void)resumeTimerInUnity;
 
+//查询用户分组,无账号系统传null，有账号系统传输用户id
+- (void)checkNewUserInUnity:(const char*)zplayId;
+
+//查询是否老用户
+//0:新用户
+//1:老用户
+- (int)getOldUserInUnity;
+
+//更新防沉迷信息
+//无账号系统无需调用，有账号系统在游戏中切换账号需要更新防沉迷信息
+- (void)updateDataReportInUnity;
 @end

@@ -22,6 +22,7 @@ public class AASDKDemoScript: MonoBehaviour
         antiAddictionSDK.NoTimeLeftWithTouristsMode += HandleNoTimeLeftWithTouristsMode;
         antiAddictionSDK.NoTimeLeftWithNonageMode += HandleNoTimeLeftWithNonageMode;
         antiAddictionSDK.LeftTimeOfCurrentUserInEverySeconds += HandleLeftTimeOfCurrentUserInEverySeconds;
+        antiAddictionSDK.OnCheckNewUseSuccess += HandleCheckNewUseSuccess;
     }
 
     // 获取当前用户游客登录状态
@@ -143,7 +144,40 @@ public class AASDKDemoScript: MonoBehaviour
         }
     }
 
-     private void OnApplicationPause(bool pause)
+    //查询用户分组,无账号系统传null，有账号系统传输用户id
+    public void CheckNewUser()
+    {
+        statusText.text = "CheckNewUser";
+        if (antiAddictionSDK != null)
+        {
+            antiAddictionSDK.CheckNewUserInUnity();
+        }
+    }
+
+    //查询是否老用户
+    //0:新用户
+    //1:老用户
+    public void GetOldUserInUnity()
+    {
+        statusText.text = "GetOldUserInUnity";
+        if (antiAddictionSDK != null)
+        {
+            statusText.text = antiAddictionSDK.IsOldUserInUnity() + "";
+        }
+    }
+
+    //更新防沉迷信息
+    //无账号系统无需调用，有账号系统在游戏中切换账号需要更新防沉迷信息
+    public void UpdateDataReportInUnity()
+    {
+        statusText.text = "UpdateDataReportInUnity";
+        if (antiAddictionSDK != null)
+        {
+            antiAddictionSDK.UpdateDataReportInUnity();
+        }
+    }
+
+    private void OnApplicationPause(bool pause)
     {
         if (pause)
         {
@@ -221,6 +255,13 @@ public class AASDKDemoScript: MonoBehaviour
         int leftTime = args.LeftTime;
         print("AntiAddiction---HandleTouristsModeLoginSuccess: " + leftTime);
         statusText.text = "HandleTouristsModeLoginSuccess: " + leftTime;
+    }
+
+    public void HandleCheckNewUseSuccess(object sender,CheckNewUseEventArgs args)
+    {
+        String userGroup = args.Message;
+        statusText.text = "HandleCheckNewUseSuccess: " + userGroup;
+        print("AntiAddiction---HandleCheckNewUseSuccess: " + userGroup);
     }
     #endregion
 

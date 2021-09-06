@@ -29,7 +29,9 @@ void AASetManagerCallbacks(
         // 未成年时间已用尽
         AANoTimeLeftWithNonageModeCallback noTimeLeftWithNonageModeCallback,
         // 每秒回调一次当前用户剩余时间
-        AALeftTimeOfCurrentUserCallback leftTimeOfCurrentUserCallback) {
+        AALeftTimeOfCurrentUserCallback leftTimeOfCurrentUserCallback,
+        //查询用户分组，1=新用户，2=老用户,查询失败返回null
+        AACheckNewUseSuccessCallback checkNewUseSuccessCallback) {
     AABridge *internalManager = (__bridge AABridge *)manager;
     internalManager.loginSuccessCallback = loginSuccessCallback;
     internalManager.loginFailCallback = loginFailCallback;
@@ -38,9 +40,10 @@ void AASetManagerCallbacks(
     internalManager.userAuthFailCallback = userAuthFailCallback;
     internalManager.noTimeLeftWithTouristsModeCallback = noTimeLeftWithTouristsModeCallback;
     internalManager.noTimeLeftWithNonageModeCallback = noTimeLeftWithNonageModeCallback;
-    internalManager.leftTimeOfCurrentUserCallback = leftTimeOfCurrentUserCallback;}
+    internalManager.leftTimeOfCurrentUserCallback = leftTimeOfCurrentUserCallback;
+    internalManager.checkNewUseSuccessCallback = checkNewUseSuccessCallback;}
 
-int getUserLoginStatus(AATypeRef manager) {    
+int getUserLoginStatus(AATypeRef manager) {
     AABridge *internalManager = (__bridge AABridge *)manager;
     return [internalManager getUserLoginStatus];
 }
@@ -93,6 +96,21 @@ void stopTimerInUnity(AATypeRef manager) {
 void resumeTimerInUnity(AATypeRef manager) {
     AABridge *internalManager = (__bridge AABridge *)manager;
     [internalManager resumeTimerInUnity];
+}
+
+void checkNewUserInUnity(AATypeRef manager,const char zplayId){
+    AABridge *internalManager = (__bridge AABridge *)manager;
+    [internalManager checkNewUserInUnity:zplayId];
+}
+
+int getOldUserInUnity(AATypeRef manager) {
+    AABridge *internalManager = (__bridge AABridge *)manager;
+    return [internalManager getOldUserInUnity];
+}
+
+void updateDataReportInUnity(AATypeRef manager) {
+    AABridge *internalManager = (__bridge AABridge *)manager;
+    [internalManager updateDataReportInUnity];
 }
 
 #pragma mark - Other methods

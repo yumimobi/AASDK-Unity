@@ -85,6 +85,27 @@
     [self.manager resumeTimer];
 }
 
+//查询用户分组,无账号系统传null，有账号系统传输用户id
+- (void)checkNewUserInUnity:(const char*)zplayId{
+    [self.manager checkNewUser:[NSString stringWithUTF8String:zplayId]];
+}
+
+//查询是否老用户
+//0:新用户
+//1:老用户
+- (int)getOldUserInUnity{
+    if ([self.manager isOldUser]) {
+        return 1;
+    }
+    return 0;
+}
+
+//更新防沉迷信息
+//无账号系统无需调用，有账号系统在游戏中切换账号需要更新防沉迷信息
+- (void)updateDataReportInUnity{
+    [self.manager updateDataReport];
+}
+
 #pragma mark - AAManagerDelegate
 /// 游客登录结果
 /// @param touristsID 游客ID 有值则为登录成功，否则登录失败
@@ -142,6 +163,14 @@
 - (void)currentUserInfo:(int)leftTime isAuthenticated:(BOOL)isAuth ageGroup:(AAAgeGroup)ageGroup {
     if (self.leftTimeOfCurrentUserCallback) {
         self.leftTimeOfCurrentUserCallback(self.client, leftTime);
+    }
+}
+
+/// 当前用户分组数据
+/// @param userGroup 用户分组，1=新用户，2老用户
+- (void)checkNewUserSuccessResult:(nullable NSString *)userGroup{
+    if (self.checkNewUseSuccessCallback) {
+        self.checkNewUseSuccessCallback(self.client,[userGroup cStringUsingEncoding:NSUTF8StringEncoding]);
     }
 }
 

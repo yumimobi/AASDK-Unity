@@ -25,7 +25,8 @@ namespace AntiAddictionSDK.iOS
             ManagerClient.AAUserAuthFailWithForceExitCallback userAuthFailWithForceExitCallback,
             ManagerClient.AANoTimeLeftWithTouristsModeCallback noTimeLeftWithTouristsModeCallback,
             ManagerClient.AANoTimeLeftWithNonageModeCallback noTimeLeftWithNonageModeCallback,
-            ManagerClient.AALeftTimeOfCurrentUserCallback leftTimeOfCurrentUserCallback
+            ManagerClient.AALeftTimeOfCurrentUserCallback leftTimeOfCurrentUserCallback,
+            ManagerClient.AACheckNewUseSuccessCallback checkNewUseSuccessCallback
         );
         
         [DllImport("__Internal")]
@@ -60,6 +61,16 @@ namespace AntiAddictionSDK.iOS
 
         [DllImport("__Internal")]
         internal static extern void resumeTimerInUnity(IntPtr manager);
+
+        [DllImport("__Internal")]
+        internal static extern void checkNewUserInUnity(IntPtr manager, string zplayId);
+
+        [DllImport("__Internal")]
+        internal static extern int getOldUserInUnity(IntPtr manager);
+
+        [DllImport("__Internal")]
+        internal static extern int updateDataReportInUnity(IntPtr manager);
+
         #endregion
     }
 }

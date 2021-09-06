@@ -21,6 +21,7 @@ namespace AntiAddictionSDK.iOS
         internal delegate void AANoTimeLeftWithTouristsModeCallback(IntPtr managerClient);
         internal delegate void AANoTimeLeftWithNonageModeCallback(IntPtr managerClient);
         internal delegate void AALeftTimeOfCurrentUserCallback(IntPtr managerClient, int leftTime);
+        internal delegate void AACheckNewUseSuccessCallback(IntPtr managerClient, string zplayID);
 #endregion
         // 登录回调
         public event EventHandler<LoginSuccessEventArgs> OnTouristsModeLoginSuccess;
@@ -34,6 +35,9 @@ namespace AntiAddictionSDK.iOS
         public event EventHandler<EventArgs> NoTimeLeftWithTouristsMode;
         public event EventHandler<EventArgs> NoTimeLeftWithNonageMode;
         public event EventHandler<LeftTimeEventArgs> LeftTimeOfCurrentUserInEverySeconds;
+
+        //检查用户分组（查看是否新老用户）
+        public event EventHandler<CheckNewUseEventArgs> OnCheckNewUseSuccess;
 
         public ManagerClient()
         {
@@ -49,7 +53,8 @@ namespace AntiAddictionSDK.iOS
                 userAuthFailWithForceExitCallback,
                 noTimeLeftWithTouristsModeCallback,
                 noTimeLeftWithNonageModeCallback,
-                leftTimeOfCurrentUserInEverySecondsCallback
+                leftTimeOfCurrentUserInEverySecondsCallback,
+                CheckNewUserSuccessCallback
             );
         }
 
@@ -134,9 +139,22 @@ namespace AntiAddictionSDK.iOS
         {
             Externs.resumeTimerInUnity(managerPtr);
         }
-#endregion
 
-#region Notification callback methods
+        public void CheckNewUserInUnity(string zplayId)
+        {
+            Externs.checkNewUserInUnity(managerPtr,zplayId);
+        }
+        public int IsOldUserInUnity()
+        {
+            return Externs.getOldUserInUnity(managerPtr);
+        }
+        public void UpdateDataReportInUnity()
+        {
+            Externs.updateDataReportInUnity(managerPtr);
+        }
+        #endregion
+
+        #region Notification callback methods
         [MonoPInvokeCallback(typeof(AALoginSuccessCallback))]
         private static void loginSuccessCallback(IntPtr managerClient, string zplayID)
         {
@@ -222,6 +240,20 @@ namespace AntiAddictionSDK.iOS
             if (client.LeftTimeOfCurrentUserInEverySeconds != null)
             {
                 client.LeftTimeOfCurrentUserInEverySeconds(client, args);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(AACheckNewUseSuccessCallback))]
+        private static void CheckNewUserSuccessCallback(IntPtr managerClient,string zplayID)
+        {
+            ManagerClient client = IntPtrToManagerClient(managerClient);
+            if (client.OnCheckNewUseSuccess != null)
+            {
+                CheckNewUseEventArgs args = new CheckNewUseEventArgs()
+                {
+                    Message = zplayID
+                };
+                client.OnCheckNewUseSuccess(client, args);
             }
         }
         

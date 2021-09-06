@@ -25,7 +25,8 @@ namespace AntiAddictionSDK.Common
         event EventHandler<EventArgs> NoTimeLeftWithNonageMode;
         // 当前用户剩余时间，每秒回调一次
         event EventHandler<LeftTimeEventArgs> LeftTimeOfCurrentUserInEverySeconds;
-
+        // 查询用户分组，1=新用户，2=老用户,查询失败返回null
+        event EventHandler<CheckNewUseEventArgs> OnCheckNewUseSuccess;
 
         // 获取当前用户游客登录状态
         // 0: 已登录
@@ -80,5 +81,17 @@ namespace AntiAddictionSDK.Common
         
         // 恢复计时器
         void ResumeTimerInUnity();
+
+        //查询用户分组,无账号系统传null，有账号系统传输用户id
+        void CheckNewUserInUnity(string zplayId);
+
+        //查询是否老用户
+        //0:新用户
+        //1:老用户
+        int IsOldUserInUnity();
+
+        //更新防沉迷信息
+        //无账号系统无需调用，有账号系统在游戏中切换账号需要更新防沉迷信息
+        void UpdateDataReportInUnity();
     }
 }

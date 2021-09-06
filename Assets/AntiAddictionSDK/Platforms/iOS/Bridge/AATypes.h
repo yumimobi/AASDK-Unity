@@ -21,3 +21,5 @@ typedef void (*AANoTimeLeftWithTouristsModeCallback)(AATypeClientRef *aaClient);
 typedef void (*AANoTimeLeftWithNonageModeCallback)(AATypeClientRef *aaClient);
 // 每秒回调一次当前用户剩余时间
 typedef void (*AALeftTimeOfCurrentUserCallback)(AATypeClientRef *aaClient, int leftTime);
+//查询用户分组，1=新用户，2=老用户,查询失败返回null
+typedef void (*AACheckNewUseSuccessCallback)(AATypeClientRef *aaClient, const char *userGroup);
