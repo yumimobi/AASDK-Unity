@@ -21,7 +21,7 @@ The AntiAddictionSystem Unity plugin enables Unity developers to easily serve An
 
 Use the links below to download the Unity package for the plugin or to take a look at its code on GitHub.  
 
-[Download the Plugin](https://github.com/yumimobi/AASDK-Unity/releases/download/1.0.0/AASDK.unitypackage)    
+[Download the Plugin](https://github.com/yumimobi/AASDK-Unity/releases/download/1.0.1/AASDK.unitypackage)    
 [View Source Code](https://github.com/yumimobi/AASDK-Unity)  
 
 ## 2.2 Import the AntiAddictionSystem Unity plugin  
@@ -65,6 +65,8 @@ You can find the `info.plist` in your Xcode project.
     <string>your game id</string>
     <key>zchannelid</key>
     <string>your channel id</string>
+    <key>zplayKey</key>
+    <string>your zplayKey</string>
 ```
 ### 2.4.2 Config the Android prameters
 Modify the prameters in `Assets/Plugins/Android/assets/ZplayConfig.xml` file.
