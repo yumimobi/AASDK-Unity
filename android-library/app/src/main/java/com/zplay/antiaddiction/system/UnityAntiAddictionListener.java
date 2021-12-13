@@ -16,6 +16,8 @@ public interface UnityAntiAddictionListener {
 
     void realNameAuthenticateFailed();
 
+    void realNameAuthSuccessStatus();
+
     void noTimeLeftWithTouristsMode();
 
     void noTimeLeftWithNonageMode();
@@ -29,5 +31,9 @@ public interface UnityAntiAddictionListener {
     void onCurrentUserBanPay();
 
     void onCurrentUserInfo(int leftTime, int isAuth, int isAdult);
+
+    void onCurrentChannelUserInfo(int isAdult);
+
+    void onUserGroupSuccessResult(int groupId);
 
 }

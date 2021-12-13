@@ -1,6 +1,6 @@
-<dependencies>
+﻿<dependencies>
   <androidPackages>
-    <androidPackage spec="io.github.yumimobi:antiaddiction:1.0.0">
+    <androidPackage spec="io.github.yumimobi:antiaddiction:1.1.9">
       <repositories>
         <repository>https://repo1.maven.org/maven2/</repository>
       </repositories>

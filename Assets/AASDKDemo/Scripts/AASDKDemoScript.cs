@@ -22,6 +22,9 @@ public class AASDKDemoScript: MonoBehaviour
         antiAddictionSDK.NoTimeLeftWithTouristsMode += HandleNoTimeLeftWithTouristsMode;
         antiAddictionSDK.NoTimeLeftWithNonageMode += HandleNoTimeLeftWithNonageMode;
         antiAddictionSDK.LeftTimeOfCurrentUserInEverySeconds += HandleLeftTimeOfCurrentUserInEverySeconds;
+        antiAddictionSDK.RealNameAuthSuccessStatus += HandleRealNameAuthSuccessStatus;
+        antiAddictionSDK.OnCurrentChannelUserInfo += HandleOnCurrentChannelUserInfo;
+        antiAddictionSDK.OnUserGroupSuccessResult += HandleOnUserGroupSuccessResult;
     }
 
     // 获取当前用户游客登录状态
@@ -120,6 +123,16 @@ public class AASDKDemoScript: MonoBehaviour
         if (antiAddictionSDK != null)
         {
             statusText.text = antiAddictionSDK.LeftTimeOfCurrentUser()+"";
+        }
+    }
+
+    // 获取防沉迷SDKuserCode
+    public void GetUserCode()
+    {
+        statusText.text = "GetUserCode";
+        if (antiAddictionSDK != null)
+        {
+            statusText.text = antiAddictionSDK.GetUserCode();
         }
     }
 
@@ -222,6 +235,37 @@ public class AASDKDemoScript: MonoBehaviour
         print("AntiAddiction---HandleTouristsModeLoginSuccess: " + leftTime);
         statusText.text = "HandleTouristsModeLoginSuccess: " + leftTime;
     }
-    #endregion
+
+    // Android SDK当游戏调用UpdateDataReport接口后返回此回调通知游戏实名认证成功状态
+    public void HandleRealNameAuthSuccessStatus(object sender, EventArgs args)
+    {
+        print("AntiAddiction---HandleRealNameAuthSuccessStatus: ");
+        statusText.text = "HandleRealNameAuthSuccessStatus: ";
+    }
+
+    // Android 联想渠道用户防沉迷实名认证状态
+    // 0：未实名认证
+    // 1：成年人
+    // 2：未成年人
+    public void HandleOnCurrentChannelUserInfo(object sender, ChannelUserInfoEventArgs args)
+    {
+        int realNameStatus = args.RealNameStatus;
+        print("AntiAddiction---HandleOnCurrentChannelUserInfo: " + realNameStatus);
+        statusText.text = "HandleOnCurrentChannelUserInfo: " + realNameStatus;
+    }
+
+    //Android 调用CheckUserGroupId接口后，会返回当前用户的分组状态（可选）
+    // -1 : 没获取到
+    // 1 : 新用户
+    // 2 : 老用户
+    public void HandleOnUserGroupSuccessResult(object sender, GroupIdEventArgs args)
+    {
+        int groupId = args.GroupId;
+        print("AntiAddiction---HandleOnUserGroupSuccessResult: " + groupId);
+        statusText.text = "HandleOnUserGroupSuccessResult: " + groupId;
+    }
+
+    
+      #endregion
 
 }
