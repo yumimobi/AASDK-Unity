@@ -103,6 +103,9 @@ AntiAddictionStytemSDK antiAddictionSDK;
     antiAddictionSDK.NoTimeLeftWithTouristsMode += HandleNoTimeLeftWithTouristsMode;
     antiAddictionSDK.NoTimeLeftWithNonageMode += HandleNoTimeLeftWithNonageMode;
     antiAddictionSDK.LeftTimeOfCurrentUserInEverySeconds += HandleLeftTimeOfCurrentUserInEverySeconds;
+    antiAddictionSDK.RealNameAuthSuccessStatus += HandleRealNameAuthSuccessStatus;
+    antiAddictionSDK.OnCurrentChannelUserInfo += HandleOnCurrentChannelUserInfo;
+    antiAddictionSDK.OnUserGroupSuccessResult += HandleOnUserGroupSuccessResult;
   }
 #region AntiAddictionStytemSDK callback handlers
     // 游客登录回调
@@ -154,6 +157,35 @@ AntiAddictionStytemSDK antiAddictionSDK;
         int leftTime = args.LeftTime;
         print("AntiAddiction---HandleTouristsModeLoginSuccess: " + leftTime);
         statusText.text = "HandleTouristsModeLoginSuccess: " + leftTime;
+    }
+
+    // Android 当游戏调用UpdateDataReport接口后返回此回调通知游戏实名认证成功状态
+    public void HandleRealNameAuthSuccessStatus(object sender, EventArgs args)
+    {
+        print("AntiAddiction---HandleRealNameAuthSuccessStatus: ");
+        statusText.text = "HandleRealNameAuthSuccessStatus: ";
+    }
+
+    // Android 联想渠道用户防沉迷实名认证状态
+    // 0：未实名认证
+    // 1：成年人
+    // 2：未成年人
+    public void HandleOnCurrentChannelUserInfo(object sender, ChannelUserInfoEventArgs args)
+    {
+        int realNameStatus = args.RealNameStatus;
+        print("AntiAddiction---HandleOnCurrentChannelUserInfo: " + realNameStatus);
+        statusText.text = "HandleOnCurrentChannelUserInfo: " + realNameStatus;
+    }
+
+    //Android 调用CheckUserGroupId接口后，会返回当前用户的分组状态（可选）
+    // -1 : 没获取到
+    // 1 : 新用户
+    // 2 : 老用户
+    public void HandleOnUserGroupSuccessResult(object sender, GroupIdEventArgs args)
+    {
+        int groupId = args.GroupId;
+        print("AntiAddiction---HandleOnUserGroupSuccessResult: " + groupId);
+        statusText.text = "HandleOnUserGroupSuccessResult: " + groupId;
     }
 
 #endregion
@@ -310,5 +342,56 @@ if (antiAddictionSDK != null)
 if (antiAddictionSDK != null)
 {
     antiAddictionSDK.ResumeTimerInUnity();
+}
+```
+
+##### 8.8 获取UserCode(可选)
+// Ios 调用当前接口不起作用
+// Android 获取UserCode
+```csharp
+if (antiAddictionSDK != null)
+{
+    string userCode = antiAddictionSDK.GetUserCode();
+}
+```
+
+##### 8.9 设置用户GroupId(可选)
+// Ios 调用当前接口不起作用
+// Android 设置用户GroupId
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.SetGroupId(int groupId);
+}
+```
+
+##### 8.10 获取用户GroupId(可选)
+// Ios 调用当前接口不起作用
+// Android 获取用户GroupId
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.GetGroupId();
+}
+```
+
+##### 8.11 更新用户数据接口(可选)
+// Ios 调用当前接口不起作用
+// Android 更新用户数据接口
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.UpdateDataReport();
+}
+```
+
+##### 8.12 检测当前用户的分组Id(可选)
+// Ios 调用当前接口不起作用
+// Android 获取当前用户的分组id，调用此方法后，会通过 event EventHandler<GroupIdEventArgs> OnUserGroupSuccessResult接口返回用户的分组信息
+// zplayId:之前用户系统的zplayId，没有可以传""
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.CheckUserGroupId(string zplayId);
 }
 ```
