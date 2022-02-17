@@ -21,7 +21,7 @@ The AntiAddictionSystem Unity plugin enables Unity developers to easily serve An
 
 Use the links below to download the Unity package for the plugin or to take a look at its code on GitHub.  
 
-[Download the Plugin](https://github.com/yumimobi/AASDK-Unity/releases/download/1.0.1/AASDK.unitypackage)    
+[Download the Plugin](https://github.com/yumimobi/AASDK-Unity/releases/download/1.1.9/AASDK.unitypackage)    
 [View Source Code](https://github.com/yumimobi/AASDK-Unity)  
 
 ## 2.2 Import the AntiAddictionSystem Unity plugin  
@@ -97,6 +97,9 @@ AntiAddictionStytemSDK antiAddictionSDK;
     antiAddictionSDK.NoTimeLeftWithTouristsMode += HandleNoTimeLeftWithTouristsMode;
     antiAddictionSDK.NoTimeLeftWithNonageMode += HandleNoTimeLeftWithNonageMode;
     antiAddictionSDK.LeftTimeOfCurrentUserInEverySeconds += HandleLeftTimeOfCurrentUserInEverySeconds;
+    antiAddictionSDK.RealNameAuthSuccessStatus += HandleRealNameAuthSuccessStatus;
+    antiAddictionSDK.OnCurrentChannelUserInfo += HandleOnCurrentChannelUserInfo;
+    antiAddictionSDK.OnUserGroupSuccessResult += HandleOnUserGroupSuccessResult;
   }
 #region AntiAddictionStytemSDK callback handlers
     // Tourist login success event
@@ -129,7 +132,6 @@ AntiAddictionStytemSDK antiAddictionSDK;
      // The user clicks to exit the game on the real-name authentication interface
     public void HandleRealNameAuthenticateFailedWithForceExit(object sender, EventArgs args)
     {
-        statusText.text = "HandleRealNameAuthenticateFailedWithForceExit";
         print("AntiAddiction---HandleRealNameAuthenticateFailedWithForceExit");
     }
 
@@ -152,8 +154,34 @@ AntiAddictionStytemSDK antiAddictionSDK;
     {
         int leftTime = args.LeftTime;
         print("AntiAddiction---HandleTouristsModeLoginSuccess: " + leftTime);
-        statusText.text = "HandleTouristsModeLoginSuccess: " + leftTime;
     }
+
+     // Android When calls the 4.9 UpdateDataReport interface, this callback is returned to notify the game of the successful status of real-name authentication.
+    public void HandleRealNameAuthSuccessStatus(object sender, EventArgs args)
+    {
+        print("AntiAddiction---HandleRealNameAuthSuccessStatus: ");
+    }
+
+    // Android real-name authentication status for Lenovo channel users
+    // 0：Not real-name authentication
+    // 1：adults
+    // 2：nonage
+    public void HandleOnCurrentChannelUserInfo(object sender, ChannelUserInfoEventArgs args)
+    {
+        int realNameStatus = args.RealNameStatus;
+        print("AntiAddiction---HandleOnCurrentChannelUserInfo: " + realNameStatus);
+    }
+
+    //Android After calling the 4.10 CheckUserGroupId interface, it will return the group status of the current user
+    // -1 : unknown
+    // 1 : new user
+    // 2 : old user
+    public void HandleOnUserGroupSuccessResult(object sender, GroupIdEventArgs args)
+    {
+        int groupId = args.GroupId;
+        print("AntiAddiction---HandleOnUserGroupSuccessResult: " + groupId);
+    }
+
 
 #endregion
 }
@@ -304,3 +332,44 @@ if (antiAddictionSDK != null)
     antiAddictionSDK.ResumeTimerInUnity();
 }
 ```
+
+
+##### 4.8 Get UserCode(Optional)
+<span style="color:rgb(150,0,0);">
+<b>Warning:</b> 4.8 is required by Android.
+</span>
+
+// Android get UserCode
+```csharp
+if (antiAddictionSDK != null)
+{
+    string userCode = antiAddictionSDK.GetUserCode();
+}
+```
+
+##### 4.9 Update user data interface(Optional)
+<span style="color:rgb(150,0,0);">
+<b>Warning:</b> 4.9 is required by Android.
+</span>
+
+// Android update user data method
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.UpdateDataReport();
+}
+```
+
+##### 4.10 check current user GroupId(Optional)
+<span style="color:rgb(150,0,0);">
+<b>Warning:</b> 4.10 is required by Android.
+</span>
+
+// Android Get the current user's group id. After calling this method, the user's group information will be returned through the event EventHandler<GroupIdEventArgs> OnUserGroupSuccessResult interface.
+
+// zplayId:If not, you can use ""
+```csharp
+if (antiAddictionSDK != null)
+{
+    antiAddictionSDK.CheckUserGroupId(string zplayId);
+}
