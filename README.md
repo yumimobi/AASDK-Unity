@@ -346,7 +346,7 @@ if (antiAddictionSDK != null)
 ```
 
 ##### 8.8 获取UserCode(可选)
-// Ios 调用当前接口不起作用
+// 此接口仅适用于Android，iOS平台无需调用。
 // Android 获取UserCode
 ```csharp
 if (antiAddictionSDK != null)
@@ -356,7 +356,7 @@ if (antiAddictionSDK != null)
 ```
 
 ##### 8.9 设置用户GroupId(可选)
-// Ios 调用当前接口不起作用
+// 此接口仅适用于Android，iOS平台无需调用。
 // Android 设置用户GroupId
 ```csharp
 if (antiAddictionSDK != null)
@@ -366,7 +366,7 @@ if (antiAddictionSDK != null)
 ```
 
 ##### 8.10 获取用户GroupId(可选)
-// Ios 调用当前接口不起作用
+// 此接口仅适用于Android，iOS平台无需调用。
 // Android 获取用户GroupId
 ```csharp
 if (antiAddictionSDK != null)
@@ -376,7 +376,7 @@ if (antiAddictionSDK != null)
 ```
 
 ##### 8.11 更新用户数据接口(可选)
-// Ios 调用当前接口不起作用
+// 此接口仅适用于Android，iOS平台无需调用。
 // Android 更新用户数据接口
 ```csharp
 if (antiAddictionSDK != null)
@@ -386,7 +386,7 @@ if (antiAddictionSDK != null)
 ```
 
 ##### 8.12 检测当前用户的分组Id(可选)
-// Ios 调用当前接口不起作用
+// 此接口仅适用于Android，iOS平台无需调用。
 // Android 获取当前用户的分组id，调用此方法后，会通过 event EventHandler<GroupIdEventArgs> OnUserGroupSuccessResult接口返回用户的分组信息
 // zplayId:之前用户系统的zplayId，没有可以传""
 ```csharp
