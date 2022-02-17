@@ -35,6 +35,19 @@ namespace AntiAddictionSDK.iOS
         public event EventHandler<EventArgs> NoTimeLeftWithNonageMode;
         public event EventHandler<LeftTimeEventArgs> LeftTimeOfCurrentUserInEverySeconds;
 
+        // Android SDK当游戏调用UpdateDataReport接口后返回此回调通知游戏实名认证成功状态
+        public event EventHandler<EventArgs> RealNameAuthSuccessStatus = delegate { };
+        // Android 联想渠道用户防沉迷实名认证状态
+        // 0：未实名认证
+        // 1：成年人
+        // 2：未成年人
+        public event EventHandler<ChannelUserInfoEventArgs> OnCurrentChannelUserInfo = delegate { };
+        //Android 调用CheckUserGroupId接口后，会返回当前用户的分组状态（可选）
+        // -1 : 没获取到
+        // 1 : 新用户
+        // 2 : 老用户
+        public event EventHandler<GroupIdEventArgs> OnUserGroupSuccessResult = delegate { };
+
         public ManagerClient()
         {
             managerClientPtr = (IntPtr)GCHandle.Alloc(this);
@@ -122,6 +135,28 @@ namespace AntiAddictionSDK.iOS
         }
 
         public void GameOnResume()
+        {
+        }
+
+        public string GetUserCode()
+        {
+            return "";
+        }
+
+        public void SetGroupId(int groupId)
+        {
+        }
+
+        public int GetGroupId()
+        {
+            return 0;
+        }
+
+        public void UpdateDataReport()
+        {
+        }
+
+        public void CheckUserGroupId(string zplayId)
         {
         }
 

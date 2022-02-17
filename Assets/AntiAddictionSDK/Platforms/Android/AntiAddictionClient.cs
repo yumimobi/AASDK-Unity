@@ -21,6 +21,19 @@ namespace AntiAddictionSDK.Android
         public event EventHandler<EventArgs> RealNameAuthenticateFailedWithForceExit = delegate { };
         public event EventHandler<LeftTimeEventArgs> LeftTimeOfCurrentUserInEverySeconds = delegate { };
 
+        // Android SDK当游戏调用UpdateDataReport接口后返回此回调通知游戏实名认证成功状态
+        public event EventHandler<EventArgs> RealNameAuthSuccessStatus = delegate { };
+        // Android 联想渠道用户防沉迷实名认证状态
+        // 0：未实名认证
+        // 1：成年人
+        // 2：未成年人
+        public event EventHandler<ChannelUserInfoEventArgs> OnCurrentChannelUserInfo = delegate { };
+        //Android 调用CheckUserGroupId接口后，会返回当前用户的分组状态（可选）
+        // -1 : 没获取到
+        // 1 : 新用户
+        // 2 : 老用户
+        public event EventHandler<GroupIdEventArgs> OnUserGroupSuccessResult = delegate { };
+
 
         public AntiAddictionClient() : base(Utils.UnityAntiAddictionListenerClassName)
         {
@@ -103,6 +116,30 @@ namespace AntiAddictionSDK.Android
             antiAddictionSDK.Call("onResume");
         }
 
+        public string GetUserCode()
+        {
+            return antiAddictionSDK.Call<string>("getUserCode");
+        }
+
+        public void SetGroupId(int groupId)
+        {
+            antiAddictionSDK.Call("setGroupId", groupId);
+        }
+
+        public int GetGroupId()
+        {
+            return antiAddictionSDK.Call<int>("getGroupId");
+        }
+
+        public void UpdateDataReport()
+        {
+            antiAddictionSDK.Call("updateDataReport");
+        }
+
+        public void CheckUserGroupId(string zplayId)
+        {
+            antiAddictionSDK.Call("checkUserGroupId", zplayId);
+        }
 
         #endregion
 
@@ -176,6 +213,51 @@ namespace AntiAddictionSDK.Android
                 LeftTimeOfCurrentUserInEverySeconds(this, args);
             }
         }
+
+        // Android SDK当游戏调用UpdateDataReport接口后返回此回调通知游戏实名认证成功状态
+        void realNameAuthSuccessStatus()
+        {
+            if (RealNameAuthSuccessStatus != null)
+            {
+                RealNameAuthSuccessStatus(this, EventArgs.Empty);
+            }
+        }
+
+        // Android 联想渠道用户防沉迷实名认证状态
+        // 0：未实名认证
+        // 1：成年人
+        // 2：未成年人
+        void onCurrentChannelUserInfo(int realNameStatus)
+        {
+            Debug.Log("-----onCurrentChannelUserInfo realNameStatus: " + realNameStatus);
+            if (OnCurrentChannelUserInfo != null)
+            {
+                ChannelUserInfoEventArgs args = new ChannelUserInfoEventArgs()
+                {
+                    RealNameStatus = realNameStatus
+                };
+                OnCurrentChannelUserInfo(this, args);
+            }
+        }
+
+        //Android 调用CheckUserGroupId接口后，会返回当前用户的分组状态（可选）
+        // -1 : 没获取到
+        // 1 : 新用户
+        // 2 : 老用户
+        void onUserGroupSuccessResult(int groupId)
+        {
+            Debug.Log("-----onUserGroupSuccessResult groupId: " + groupId);
+            if (OnUserGroupSuccessResult != null)
+            {
+                GroupIdEventArgs args = new GroupIdEventArgs()
+                {
+                    GroupId = groupId
+                };
+                OnUserGroupSuccessResult(this, args);
+            }
+        }
+
+
         #endregion
     }
 }

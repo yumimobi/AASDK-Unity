@@ -25,6 +25,19 @@ namespace AntiAddictionSDK.Common
         event EventHandler<EventArgs> NoTimeLeftWithNonageMode;
         // 当前用户剩余时间，每秒回调一次
         event EventHandler<LeftTimeEventArgs> LeftTimeOfCurrentUserInEverySeconds;
+        
+        // Android SDK当游戏调用UpdateDataReport接口后返回此回调通知游戏实名认证成功状态
+        event EventHandler<EventArgs> RealNameAuthSuccessStatus;
+        // Android 联想渠道用户防沉迷实名认证状态
+        // 0：未实名认证
+        // 1：成年人
+        // 2：未成年人
+        event EventHandler<ChannelUserInfoEventArgs> OnCurrentChannelUserInfo;
+        //Android 调用CheckUserGroupId接口后，会返回当前用户的分组状态（可选）
+        // -1 : 没获取到
+        // 1 : 新用户
+        // 2 : 老用户
+        event EventHandler<GroupIdEventArgs> OnUserGroupSuccessResult;
 
 
         // 获取当前用户游客登录状态
@@ -80,5 +93,21 @@ namespace AntiAddictionSDK.Common
         
         // 恢复计时器
         void ResumeTimerInUnity();
+
+        // Android 获取UserCode
+        string GetUserCode();
+
+        // Android 设置用户GroupId
+        void SetGroupId(int groupId);
+
+        // Android 获取用户GroupId
+        int GetGroupId();
+
+        // Android更新用户数据接口
+        void UpdateDataReport();
+
+        // Android获取当前用户的分组id，调用此方法后，会通过 event EventHandler<GroupIdEventArgs> OnUserGroupSuccessResult接口返回用户的分组信息
+        // zplayId:之前用户系统的zplayId，没有可以传""
+        void CheckUserGroupId(string zplayId);
     }
 }
