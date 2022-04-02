@@ -21,7 +21,7 @@ The AntiAddictionSystem Unity plugin enables Unity developers to easily serve An
 
 Use the links below to download the Unity package for the plugin or to take a look at its code on GitHub.  
 
-[Download the Plugin](https://github.com/yumimobi/AASDK-Unity/releases/download/1.1.9/AASDK.unitypackage)    
+[Download the Plugin](https://github.com/yumimobi/AASDK-Unity/releases/download/1.2.0/AASDK.unitypackage)    
 [View Source Code](https://github.com/yumimobi/AASDK-Unity)  
 
 ## 2.2 Import the AntiAddictionSystem Unity plugin  
