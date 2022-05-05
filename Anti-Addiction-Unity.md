@@ -100,6 +100,7 @@ AntiAddictionStytemSDK antiAddictionSDK;
     antiAddictionSDK.RealNameAuthSuccessStatus += HandleRealNameAuthSuccessStatus;
     antiAddictionSDK.OnCurrentChannelUserInfo += HandleOnCurrentChannelUserInfo;
     antiAddictionSDK.OnUserGroupSuccessResult += HandleOnUserGroupSuccessResult;
+    antiAddictionSDK.OnClickExitGameButton += HandleOnClickExitGameButton;
   }
 #region AntiAddictionStytemSDK callback handlers
     // Tourist login success event
@@ -180,6 +181,13 @@ AntiAddictionStytemSDK antiAddictionSDK;
     {
         int groupId = args.GroupId;
         print("AntiAddiction---HandleOnUserGroupSuccessResult: " + groupId);
+    }
+
+    // Android only. Call back when the user clicks the exit game button on the real-name authentication page. After the game receives the callback, please exit the game.
+    public void HandleOnClickExitGameButton(object sender, EventArgs args)
+    {
+        print("AntiAddiction---HandleOnClickExitGameButton: ");
+        statusText.text = "HandleOnClickExitGameButton: ";
     }
 
 

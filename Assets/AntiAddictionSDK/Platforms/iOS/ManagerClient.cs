@@ -48,6 +48,9 @@ namespace AntiAddictionSDK.iOS
         // 2 : 老用户
         public event EventHandler<GroupIdEventArgs> OnUserGroupSuccessResult = delegate { };
 
+        //用户点击实名认证界面退出游戏按钮时回调
+        public event EventHandler<EventArgs> OnClickExitGameButton = delegate { };
+
         public ManagerClient()
         {
             managerClientPtr = (IntPtr)GCHandle.Alloc(this);

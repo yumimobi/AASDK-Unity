@@ -39,6 +39,10 @@ namespace AntiAddictionSDK.Common
         // 2 : 老用户
         event EventHandler<GroupIdEventArgs> OnUserGroupSuccessResult;
 
+        //用户点击实名认证界面退出游戏按钮时回调
+        event EventHandler<EventArgs> OnClickExitGameButton;
+        
+
 
         // 获取当前用户游客登录状态
         // 0: 已登录
