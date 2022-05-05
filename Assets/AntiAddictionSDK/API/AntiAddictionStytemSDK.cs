@@ -101,6 +101,15 @@ namespace AntiAddictionSDK.Api
                     OnUserGroupSuccessResult(this, args);
                 }
             };
+
+            client.OnClickExitGameButton += (SpriteRenderer, args) =>
+            {
+                if (OnClickExitGameButton != null)
+                {
+                    OnClickExitGameButton(this, args);
+                }
+            };
+
         }
 
 
@@ -135,6 +144,9 @@ namespace AntiAddictionSDK.Api
         // 1 : 新用户
         // 2 : 老用户
         public event EventHandler<GroupIdEventArgs> OnUserGroupSuccessResult;
+
+        //用户点击实名认证界面退出游戏按钮时回调
+        public event EventHandler<EventArgs> OnClickExitGameButton;
 
 
         // 获取当前用户游客登录状态

@@ -25,6 +25,7 @@ public class AASDKDemoScript: MonoBehaviour
         antiAddictionSDK.RealNameAuthSuccessStatus += HandleRealNameAuthSuccessStatus;
         antiAddictionSDK.OnCurrentChannelUserInfo += HandleOnCurrentChannelUserInfo;
         antiAddictionSDK.OnUserGroupSuccessResult += HandleOnUserGroupSuccessResult;
+        antiAddictionSDK.OnClickExitGameButton += HandleOnClickExitGameButton;
     }
 
     // 获取当前用户游客登录状态
@@ -265,7 +266,14 @@ public class AASDKDemoScript: MonoBehaviour
         statusText.text = "HandleOnUserGroupSuccessResult: " + groupId;
     }
 
-    
-      #endregion
+    // Android SDK当用户点击实名认证上的退出游戏按钮后回调
+    public void HandleOnClickExitGameButton(object sender, EventArgs args)
+    {
+        print("AntiAddiction---HandleOnClickExitGameButton: ");
+        statusText.text = "HandleOnClickExitGameButton: ";
+    }
+
+
+    #endregion
 
 }

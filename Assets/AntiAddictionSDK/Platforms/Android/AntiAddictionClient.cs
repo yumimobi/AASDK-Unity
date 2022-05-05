@@ -34,6 +34,9 @@ namespace AntiAddictionSDK.Android
         // 2 : 老用户
         public event EventHandler<GroupIdEventArgs> OnUserGroupSuccessResult = delegate { };
 
+        //用户点击实名认证界面退出游戏按钮时回调
+        public event EventHandler<EventArgs> OnClickExitGameButton = delegate { };
+
 
         public AntiAddictionClient() : base(Utils.UnityAntiAddictionListenerClassName)
         {
@@ -254,6 +257,17 @@ namespace AntiAddictionSDK.Android
                     GroupId = groupId
                 };
                 OnUserGroupSuccessResult(this, args);
+            }
+        }
+
+
+
+        void onClickExitGameButton()
+        {
+            if (OnClickExitGameButton != null)
+            {
+                Debug.Log("-----onClickExitGameButton: ");
+                OnClickExitGameButton(this, EventArgs.Empty);
             }
         }
 

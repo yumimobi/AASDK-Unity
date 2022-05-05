@@ -106,6 +106,8 @@ AntiAddictionStytemSDK antiAddictionSDK;
     antiAddictionSDK.RealNameAuthSuccessStatus += HandleRealNameAuthSuccessStatus;
     antiAddictionSDK.OnCurrentChannelUserInfo += HandleOnCurrentChannelUserInfo;
     antiAddictionSDK.OnUserGroupSuccessResult += HandleOnUserGroupSuccessResult;
+    antiAddictionSDK.OnClickExitGameButton += HandleOnClickExitGameButton;
+
   }
 #region AntiAddictionStytemSDK callback handlers
     // 游客登录回调
@@ -186,6 +188,14 @@ AntiAddictionStytemSDK antiAddictionSDK;
         int groupId = args.GroupId;
         print("AntiAddiction---HandleOnUserGroupSuccessResult: " + groupId);
         statusText.text = "HandleOnUserGroupSuccessResult: " + groupId;
+    }
+
+
+    // Android SDK当用户点击实名认证页面上的退出游戏按钮后回调，游戏收到回调后请进行退出游戏处理
+    public void HandleOnClickExitGameButton(object sender, EventArgs args)
+    {
+        print("AntiAddiction---HandleOnClickExitGameButton: ");
+        statusText.text = "HandleOnClickExitGameButton: ";
     }
 
 #endregion
